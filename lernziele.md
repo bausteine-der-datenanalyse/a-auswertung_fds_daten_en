@@ -1,0 +1,2 @@
+- Einlesen von fds Daten mit dem fdsreader
+- Analyse der Daten in Bezug auf ASET

@@ -1,0 +1,41 @@
+project:
+  type: book
+
+book:
+  title: "a-auswertung_fds_daten"
+  author:
+    - Lukas Arnold
+    - Simone Arnold
+    - Florian Bagemihl
+    - Matthias Baitsch
+    - Marc Fehr
+    - Maik Poetzsch
+    - Sebastian Seipel
+  date: today
+  language: de-DE
+  downloads: [pdf]
+  repo-url: "https://github.com/bausteine-der-datenanalyse/a-auswertung_fds_daten"
+  repo-actions: [source]
+
+bibliography: skript/references.bib
+
+format:
+  html:
+    theme: [cosmo, theme.scss]
+    lang: de
+    tbl-cap-location: bottom
+  pdf:
+    documentclass: scrreprt
+    lang: de
+    toc-depth: 1
+
+execute:
+  freeze: auto
+
+profile:
+  default: full
+  group: 
+    - [full, klausur]
+
+
+
