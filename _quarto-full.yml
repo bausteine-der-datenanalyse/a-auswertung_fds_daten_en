@@ -1,0 +1,10 @@
+project:  
+  output-dir: output/book/
+book:
+  chapters: 
+    - index.qmd
+    - skript/introduction.qmd
+
+    
+    - uebungen/uebung.qmd
+    - klausurfragen/klausurfragen.qmd
