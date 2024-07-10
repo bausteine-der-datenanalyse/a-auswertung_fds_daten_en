@@ -1,0 +1,62 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "a-auswertung_fds_daten",
+    "section": "",
+    "text": "Preamble",
+    "crumbs": [
+      "Preamble"
+    ]
+  },
+  {
+    "objectID": "index.html#voraussetzungen",
+    "href": "index.html#voraussetzungen",
+    "title": "a-auswertung_fds_daten",
+    "section": "Voraussetzungen",
+    "text": "Voraussetzungen\n\nGrundlagen Python\nEinbinden von zusätzlichen Paketen\nArbeiten mit NumPy\nArbeiten mit Pandas\nPlotten mit Matplotlib\nGrundkentnisse Fire simulation?",
+    "crumbs": [
+      "Preamble"
+    ]
+  },
+  {
+    "objectID": "index.html#verwendete-pakete-und-datensätze",
+    "href": "index.html#verwendete-pakete-und-datensätze",
+    "title": "a-auswertung_fds_daten",
+    "section": "Verwendete Pakete und Datensätze",
+    "text": "Verwendete Pakete und Datensätze\n\nNumPy\npandas\nmatplotlib\nfdsreader",
+    "crumbs": [
+      "Preamble"
+    ]
+  },
+  {
+    "objectID": "index.html#bearbeitungszeit",
+    "href": "index.html#bearbeitungszeit",
+    "title": "a-auswertung_fds_daten",
+    "section": "Bearbeitungszeit",
+    "text": "Bearbeitungszeit\nGeschätzte Bearbeitungszeit: 2h",
+    "crumbs": [
+      "Preamble"
+    ]
+  },
+  {
+    "objectID": "index.html#lernziele",
+    "href": "index.html#lernziele",
+    "title": "a-auswertung_fds_daten",
+    "section": "Lernziele",
+    "text": "Lernziele\n\nEinlesen von fds Daten mit dem fdsreader\nAnalyse der Daten in Bezug auf ASET",
+    "crumbs": [
+      "Preamble"
+    ]
+  },
+  {
+    "objectID": "skript/introduction.html",
+    "href": "skript/introduction.html",
+    "title": "a-auswertung_fds_daten",
+    "section": "",
+    "text": "test",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>introduction.html</span>"
+    ]
+  }
+]
