@@ -89,7 +89,7 @@ plt.colorbar(orientation='horizontal', label='time / s' );
 # save output to file
 #plt.savefig('figs/appartment_aset_map.svg', bbox_inches='tight')
 
-plt.close()
+# plt.close()
 ```
 
 ## Smoke layer
@@ -120,7 +120,7 @@ plt.colorbar(orientation='horizontal', label=f'{slc.quantity.name} / {slc.quanti
 # save output to file
 #plt.savefig('figs/appartment_temp_slice.svg', bbox_inches='tight')
 
-plt.close()
+# plt.close()
 ```
 
 Now, for each y-position the z-indices are found, where the temperature exceedes the limit temperature. The lowest value is the smoke layer height at the y-position.
@@ -158,7 +158,7 @@ plt.plot(slc_coords['y'], layer_height, '.-', color='red')
 # save output to file
 #plt.savefig('figs/appartment_temp_slice_height.svg', bbox_inches='tight')
 
-plt.close()
+# plt.close()
 ```
 
 Using the above approach for a single point in time, a loop over all times can 
@@ -195,7 +195,7 @@ plt.ylabel('Height / m')
 # save output to file
 #plt.savefig('figs/appartment_layer_mean_stddev.svg', bbox_inches='tight')
 
-plt.close()
+# plt.close()
 ```
 
 Both values can be combined and visualised jointly, where the standard deviation 
@@ -218,7 +218,7 @@ plt.ylabel('Height / m')
 # save output to file
 #plt.savefig('figs/appartment_layer_mean_band.svg', bbox_inches='tight')
 
-plt.close()
+# plt.close()
 ```
 
 If parts of the region shall be excluded in the analysis, a coordinate dependent 
@@ -245,7 +245,7 @@ plt.plot(slc_coords['y'][coord_mask], layer_height[coord_mask], '.-', color='red
 # save output to file
 #plt.savefig('figs/appartment_temp_slice_height_mask.svg', bbox_inches='tight')
 
-plt.close()
+# plt.close()
 ```
 
 The above procedure can be reused, yet the computation of the mean and standard 
@@ -279,5 +279,5 @@ plt.ylabel('Height / m')
 # save output to file
 #plt.savefig('figs/appartment_layer_mean_band_mask.svg', bbox_inches='tight')
 
-plt.close()
+# plt.close()
 ```
