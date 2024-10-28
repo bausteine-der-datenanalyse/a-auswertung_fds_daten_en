@@ -2,7 +2,7 @@ project:
   type: book
 
 book:
-  title: "a-auswertung_fds_daten"
+  title: "Anwendungsbaustein - Auswertung von fds-Daten"
   author:
     - Lukas Arnold
     - Simone Arnold
@@ -22,11 +22,11 @@ bibliography: skript/references.bib
 format:
   html:
     theme: [cosmo, theme.scss]
-    lang: de
+    lang: en
     tbl-cap-location: bottom
   pdf:
     documentclass: scrreprt
-    lang: de
+    lang: en
     toc-depth: 1
 
 execute:

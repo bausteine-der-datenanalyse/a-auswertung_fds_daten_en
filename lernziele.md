@@ -1,2 +1,2 @@
-- Einlesen von fds Daten mit dem fdsreader
-- Analyse der Daten in Bezug auf ASET
+- Reading in data using the fdsreader
+- Analyzing the data to perform an ASET analysis

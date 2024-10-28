@@ -4,6 +4,8 @@ book:
   chapters: 
     - index.qmd
     - skript/introduction.qmd
+    - skript/fdsreader.qmd
+    - skript/aset.qmd
 
     
     - uebungen/uebung.qmd

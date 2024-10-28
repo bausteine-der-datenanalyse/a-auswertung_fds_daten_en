@@ -1,0 +1,1576 @@
+########################################
+# Header -- Run Case -- fdsreader_example_01
+label: fdsreader_example_01
+current time: Wed Oct 26 21:09:34 CEST 2022
+user: larnold
+machine: ana21001.pleiades.uni-wuppertal.de
+
+########################################
+# Directory Contents
+total 24K
+drwxrwxr-x 2 larnold cobra  143 Oct 26 21:09 .
+drwxrwxr-x 4 larnold cobra   54 Oct 26 18:16 ..
+-rw-rw-r-- 1 larnold cobra 1.5K Oct 26 21:06 case_download.sh
+-rw-rw-r-- 1 larnold cobra 1.8K Oct 26 18:04 case_pack.sh
+-rw-rw-r-- 1 larnold cobra 2.4K Oct 26 18:04 case_run.sh
+-rw-rw-r-- 1 larnold cobra 3.3K Oct 26 21:09 example_01.fds
+-rw-rw-r-- 1 larnold cobra   20 Oct 26 18:04 label
+-rw-rw-r-- 1 larnold cobra  279 Oct 26 21:09 log
+
+########################################
+# FDS Version
+
+ Fire Dynamics Simulator
+
+ Current Date     : October 26, 2022  21:09:34
+ Revision         : FDS6.7.9-0-gec52dee-HEAD
+ Revision Date    : Sun Jun 26 14:36:40 2022 -0400
+ Compiler         : ifort version 2021.2.0
+ Compilation Date : Jun 30, 2022 15:04:40
+
+ MPI Enabled;    Number of MPI Processes:       1
+ OpenMP Disabled
+
+ MPI version: 3.1
+ MPI library version: Intel(R) MPI Library 2021.2 for Linux* OS
+
+ Consult FDS Users Guide Chapter, Running FDS, for further instructions.
+
+########################################
+# FDS File Check
+number of FDS input files found: 1
+name of FDS input file: example_01.fds
+
+########################################
+# FDS File Contents
+&HEAD CHID='StecklerExample', TITLE='Example of a Steckler case, with 3/6 door' /
+
+&TIME T_END=1800.0 /
+&DUMP NFRAMES=1800 /
+
+&MISC BNDF_DEFAULT=F /
+
+# ---------------------------------------
+# Computational domain
+# ---------------------------------------
+
+&MESH ID  = 'Domain_Simple',
+      IJK = 40,28,22,
+      XB  = -1.40,2.60,-1.40,1.40,0.00,2.20 /
+
+
+# ---------------------------------------
+# Open boundary conditions
+# ---------------------------------------
+
+&VENT MB='XMAX', SURF_ID='OPEN' /
+
+&VENT ID      = 'OpenCeiling',
+      SURF_ID = 'OPEN',
+      XB      = 1.51,2.60,-1.40,1.40,2.20,2.20 /
+&VENT ID      = 'OpenLeft',
+      SURF_ID = 'OPEN',
+      XB      = 1.51,2.60,-1.40,-1.40,0.00,2.20 /
+&VENT ID      = 'OpenRight',
+      SURF_ID = 'OPEN',
+      XB      = 1.51,2.60,1.40,1.40,0.00,2.20 /
+
+# ---------------------------------------
+# Gas burner: propane
+# ---------------------------------------
+
+&SPEC ID = 'PROPANE' /
+
+&REAC FUEL       = 'PROPANE',
+      SOOT_YIELD = 0.022 /
+
+# HRR: 62.9 kW
+&SURF ID         = 'BURNER',
+      HRRPUA     = 393.74999999999994,
+      SPEC_ID(1) = 'PROPANE'
+      COLOR      = 'RASPBERRY' /
+
+&OBST SURF_ID = 'INERT',
+      XB      = -0.2, 0.2, -0.2, 0.2, 0.0, 0.2 /
+
+&VENT SURF_ID = 'BURNER',
+      XB      = -0.2, 0.2, -0.2, 0.2, 0.2, 0.2 /
+
+
+# ---------------------------------------
+# Surface definition (boundary conditions)
+# ---------------------------------------
+
+&SURF ID                      = 'Wall Lining',
+      COLOR                   = 'BEIGE',
+      DEFAULT                 = T,
+      THICKNESS(1:1)          = 0.0254,
+      MATL_ID(1,1:1)          = 'MARINITE',
+      MATL_MASS_FRACTION(1,1) = 1.0 /
+
+
+&MATL ID            = 'MARINITE'
+      EMISSIVITY    = 0.9
+      DENSITY       = 737.
+      SPECIFIC_HEAT = 1.2
+      CONDUCTIVITY  = 0.12 /
+
+
+# ---------------------------------------
+# Geometrical Structure
+# ---------------------------------------
+
+&OBST ID        = 'Ceiling',
+      SURF_ID   = 'Wall Lining',
+      BNDF_OBST = T,
+      XB        = -1.51,1.51,-1.51,1.51,2.20,2.31 /
+
+&OBST ID      = 'WallFront',
+      SURF_ID = 'Wall Lining'
+      XB      = 1.40,1.51,-1.51,1.51,0.00,2.20 /
+
+&OBST ID      = 'WallRight',
+      SURF_ID = 'Wall Lining',
+      BNDF_OBST = T,
+      XB      = -1.40,1.40,1.40,1.51,0.00,2.20 /
+
+# Cut out for door
+&HOLE ID = 'WallFront.001'
+      XB=1.4050,1.5150,-0.2000,0.2000,0.0000,1.8000 /
+
+
+# ---------------------------------------
+# Analytics
+# ---------------------------------------
+
+&SLCF PBX      = 0.00
+      QUANTITY = 'TEMPERATURE' /
+&SLCF PBY      = 0.00
+      QUANTITY = 'TEMPERATURE' /
+
+&SLCF PBX           = 0.00
+      QUANTITY      = 'W-VELOCITY' /
+&SLCF PBY           = 0.00
+      QUANTITY      = 'U-VELOCITY' /
+
+&SLCF PBZ           = 1.80
+      QUANTITY      = 'W-VELOCITY' /
+
+&BNDF QUANTITY      = 'WALL TEMPERATURE',
+      CELL_CENTERED = T /
+
+&DEVC ID       = 'Temp_Door_Low',
+      QUANTITY = 'TEMPERATURE',
+      XYZ      = 1.45, 0.05, 0.1 /
+
+&DEVC ID       = 'Temp_Door_Mid',
+      QUANTITY = 'TEMPERATURE',
+      XYZ      = 1.45, 0.05, 1.0 /
+
+&DEVC ID       = 'Temp_Door_High',
+      QUANTITY = 'TEMPERATURE',
+      XYZ      = 1.45, 0.05, 1.65 /
+
+&TAIL/
+
+########################################
+# Prepare Run Directory 
+
+########################################
+# Execute FDS
+
+ Starting FDS ...
+
+ MPI Process      0 started on ana21001.pleiades.uni-wuppertal.de
+
+ Reading FDS input file ...
+
+
+ Fire Dynamics Simulator
+
+ Current Date     : October 26, 2022  21:09:34
+ Revision         : FDS6.7.9-0-gec52dee-HEAD
+ Revision Date    : Sun Jun 26 14:36:40 2022 -0400
+ Compiler         : ifort version 2021.2.0
+ Compilation Date : Jun 30, 2022 15:04:40
+
+ MPI Enabled;    Number of MPI Processes:       1
+ OpenMP Disabled
+
+ MPI version: 3.1
+ MPI library version: Intel(R) MPI Library 2021.2 for Linux* OS
+
+
+ Job TITLE        : Example of a Steckler case, with 3/6 door
+ Job ID string    : StecklerExample
+
+ Time Step:      1, Simulation Time:      0.11 s
+ Time Step:      2, Simulation Time:      0.21 s
+ Time Step:      3, Simulation Time:      0.32 s
+ Time Step:      4, Simulation Time:      0.43 s
+ Time Step:      5, Simulation Time:      0.47 s
+ Time Step:      6, Simulation Time:      0.52 s
+ Time Step:      7, Simulation Time:      0.57 s
+ Time Step:      8, Simulation Time:      0.63 s
+ Time Step:      9, Simulation Time:      0.70 s
+ Time Step:     10, Simulation Time:      0.77 s
+ Time Step:     20, Simulation Time:      1.14 s
+ Time Step:     30, Simulation Time:      1.35 s
+ Time Step:     40, Simulation Time:      1.54 s
+ Time Step:     50, Simulation Time:      1.70 s
+ Time Step:     60, Simulation Time:      1.85 s
+ Time Step:     70, Simulation Time:      1.99 s
+ Time Step:     80, Simulation Time:      2.15 s
+ Time Step:     90, Simulation Time:      2.32 s
+ Time Step:    100, Simulation Time:      2.48 s
+ Time Step:    200, Simulation Time:      4.10 s
+ Time Step:    300, Simulation Time:      5.59 s
+ Time Step:    400, Simulation Time:      7.13 s
+ Time Step:    500, Simulation Time:      8.76 s
+ Time Step:    600, Simulation Time:     10.41 s
+ Time Step:    700, Simulation Time:     12.13 s
+ Time Step:    800, Simulation Time:     13.72 s
+ Time Step:    900, Simulation Time:     15.41 s
+ Time Step:   1000, Simulation Time:     17.11 s
+ Time Step:   1100, Simulation Time:     18.93 s
+ Time Step:   1200, Simulation Time:     21.01 s
+ Time Step:   1300, Simulation Time:     23.05 s
+ Time Step:   1400, Simulation Time:     25.33 s
+ Time Step:   1500, Simulation Time:     27.48 s
+ Time Step:   1600, Simulation Time:     29.65 s
+ Time Step:   1700, Simulation Time:     31.82 s
+ Time Step:   1800, Simulation Time:     34.09 s
+ Time Step:   1900, Simulation Time:     36.47 s
+ Time Step:   2000, Simulation Time:     38.53 s
+ Time Step:   2100, Simulation Time:     40.72 s
+ Time Step:   2200, Simulation Time:     43.04 s
+ Time Step:   2300, Simulation Time:     45.30 s
+ Time Step:   2400, Simulation Time:     47.55 s
+ Time Step:   2500, Simulation Time:     49.83 s
+ Time Step:   2600, Simulation Time:     52.16 s
+ Time Step:   2700, Simulation Time:     54.65 s
+ Time Step:   2800, Simulation Time:     56.99 s
+########################################
+# Header -- Pack Case -- fdsreader_example_01
+label: fdsreader_example_01
+current time: Wed Oct 26 21:13:03 CEST 2022
+user: larnold
+machine: ana21001.pleiades.uni-wuppertal.de
+
+########################################
+# Directory Contents
+total 32K
+drwxrwxr-x 3 larnold cobra  161 Oct 26 21:09 .
+drwxrwxr-x 4 larnold cobra   54 Oct 26 18:16 ..
+-rw-rw-r-- 1 larnold cobra 1.5K Oct 26 21:06 case_download.sh
+-rw-rw-r-- 1 larnold cobra 1.8K Oct 26 18:04 case_pack.sh
+-rw-rw-r-- 1 larnold cobra 2.4K Oct 26 18:04 case_run.sh
+-rw-rw-r-- 1 larnold cobra 3.3K Oct 26 21:09 example_01.fds
+-rw-rw-r-- 1 larnold cobra   20 Oct 26 18:04 label
+-rw-rw-r-- 1 larnold cobra 7.9K Oct 26 21:13 log
+drwxrwxr-x 2 larnold cobra 4.0K Oct 26 21:09 rundir
+
+########################################
+# zip Version
+Copyright (c) 1990-2008 Info-ZIP - Type 'zip "-L"' for software license.
+This is Zip 3.0 (July 5th 2008), by Info-ZIP.
+Currently maintained by E. Gordon.  Please send bug reports to
+the authors using the web page at www.info-zip.org; see README for details.
+
+Latest sources and executables are at ftp://ftp.info-zip.org/pub/infozip,
+as of above date; see http://www.info-zip.org/ for other sites.
+
+Compiled with gcc 4.8.5 20150623 (Red Hat 4.8.5-11) for Unix (Linux ELF) on Nov  5 2016.
+
+Zip special compilation options:
+	USE_EF_UT_TIME       (store Universal Time)
+	BZIP2_SUPPORT        (bzip2 library version 1.0.6, 6-Sept-2010)
+	    bzip2 code and library copyright (c) Julian R Seward
+	    (See the bzip2 license for terms of use)
+	SYMLINK_SUPPORT      (symbolic links supported)
+	LARGE_FILE_SUPPORT   (can read and write large files on file system)
+	ZIP64_SUPPORT        (use Zip64 to store large files in archives)
+	UNICODE_SUPPORT      (store and read UTF-8 Unicode paths)
+	STORE_UNIX_UIDs_GIDs (store UID/GID sizes/values using new extra field)
+	UIDGID_NOT_16BIT     (old Unix 16-bit UID/GID extra field not used)
+	[encryption, version 2.91 of 05 Jan 2007] (modified for Zip 3)
+
+Encryption notice:
+	The encryption code of this program is not copyrighted and is
+	put in the public domain.  It was originally written in Europe
+	and, to the best of our knowledge, can be freely distributed
+	in both source and object forms from any country, including
+	the USA under License Exception TSU of the U.S. Export
+	Administration Regulations (section 740.13(e)) of 6 June 2002.
+
+Zip environment options:
+             ZIP:  [none]
+          ZIPOPT:  [none]
+
+########################################
+# Print Run Directory Contents
+total 4.1M
+drwxrwxr-x 2 larnold cobra 4.0K Oct 26 21:09 .
+drwxrwxr-x 3 larnold cobra  161 Oct 26 21:09 ..
+-rw-rw-r-- 1 larnold cobra 3.3K Oct 26 21:09 example_01.fds
+-rw-rw-r-- 1 larnold cobra 357K Oct 26 21:12 StecklerExample_1_1.bf
+-rw-rw-r-- 1 larnold cobra 2.5K Oct 26 21:12 StecklerExample_1_1.bf.bnd
+-rw-rw-r-- 1 larnold cobra 675K Oct 26 21:12 StecklerExample_1_1.s3d
+-rw-rw-r-- 1 larnold cobra 3.2K Oct 26 21:12 StecklerExample_1_1.s3d.sz
+-rw-rw-r-- 1 larnold cobra 156K Oct 26 21:12 StecklerExample_1_1.sf
+-rw-rw-r-- 1 larnold cobra 2.5K Oct 26 21:12 StecklerExample_1_1.sf.bnd
+-rw-rw-r-- 1 larnold cobra  53K Oct 26 21:12 StecklerExample_1_2.s3d
+-rw-rw-r-- 1 larnold cobra 3.2K Oct 26 21:12 StecklerExample_1_2.s3d.sz
+-rw-rw-r-- 1 larnold cobra 219K Oct 26 21:12 StecklerExample_1_2.sf
+-rw-rw-r-- 1 larnold cobra 2.5K Oct 26 21:12 StecklerExample_1_2.sf.bnd
+-rw-rw-r-- 1 larnold cobra 630K Oct 26 21:12 StecklerExample_1_3.s3d
+-rw-rw-r-- 1 larnold cobra 3.2K Oct 26 21:12 StecklerExample_1_3.s3d.sz
+-rw-rw-r-- 1 larnold cobra 156K Oct 26 21:12 StecklerExample_1_3.sf
+-rw-rw-r-- 1 larnold cobra 2.5K Oct 26 21:12 StecklerExample_1_3.sf.bnd
+-rw-rw-r-- 1 larnold cobra 219K Oct 26 21:12 StecklerExample_1_4.sf
+-rw-rw-r-- 1 larnold cobra 2.5K Oct 26 21:12 StecklerExample_1_4.sf.bnd
+-rw-rw-r-- 1 larnold cobra 276K Oct 26 21:12 StecklerExample_1_5.sf
+-rw-rw-r-- 1 larnold cobra 2.5K Oct 26 21:12 StecklerExample_1_5.sf.bnd
+-rw-rw-r-- 1 larnold cobra    2 Oct 26 21:09 StecklerExample.binfo
+-rw-rw-r-- 1 larnold cobra 3.8K Oct 26 21:12 StecklerExample_devc.csv
+-rw-rw-r-- 1 larnold cobra   12 Oct 26 21:09 StecklerExample.end
+-rw-rw-r-- 1 larnold cobra   25 Oct 26 21:09 StecklerExample_git.txt
+-rw-rw-r-- 1 larnold cobra  13K Oct 26 21:12 StecklerExample_hrr.csv
+-rw-rw-r-- 1 larnold cobra  42K Oct 26 21:12 StecklerExample.out
+-rw-rw-r-- 1 larnold cobra    2 Oct 26 21:09 StecklerExample.sinfo
+-rw-rw-r-- 1 larnold cobra  12K Oct 26 21:09 StecklerExample.smv
+-rw-rw-r-- 1 larnold cobra 3.5K Oct 26 21:12 StecklerExample_steps.csv
+
+########################################
+# zip Command
+  adding: rundir/ (stored 0%)
+  adding: rundir/example_01.fds (deflated 71%)
+  adding: rundir/StecklerExample.sinfo (stored 0%)
+  adding: rundir/StecklerExample.binfo (stored 0%)
+  adding: rundir/StecklerExample.smv (deflated 85%)
+  adding: rundir/StecklerExample_git.txt (stored 0%)
+  adding: rundir/StecklerExample.end (deflated 8%)
+  adding: rundir/StecklerExample_1_1.s3d (deflated 65%)
+  adding: rundir/StecklerExample_1_1.s3d.sz (deflated 74%)
+  adding: rundir/StecklerExample_1_2.s3d (deflated 60%)
+  adding: rundir/StecklerExample_1_2.s3d.sz (deflated 84%)
+  adding: rundir/StecklerExample_1_3.s3d (deflated 65%)
+  adding: rundir/StecklerExample_1_3.s3d.sz (deflated 83%)
+  adding: rundir/StecklerExample_1_1.sf (deflated 15%)
+  adding: rundir/StecklerExample_1_1.sf.bnd (deflated 75%)
+  adding: rundir/StecklerExample_1_2.sf (deflated 15%)
+  adding: rundir/StecklerExample_1_2.sf.bnd (deflated 75%)
+  adding: rundir/StecklerExample_1_3.sf (deflated 11%)
+  adding: rundir/StecklerExample_1_3.sf.bnd (deflated 64%)
+  adding: rundir/StecklerExample_1_4.sf (deflated 9%)
+  adding: rundir/StecklerExample_1_4.sf.bnd (deflated 66%)
+  adding: rundir/StecklerExample_1_5.sf (deflated 6%)
+  adding: rundir/StecklerExample_1_5.sf.bnd (deflated 65%)
+  adding: rundir/StecklerExample_1_1.bf (deflated 23%)
+  adding: rundir/StecklerExample_1_1.bf.bnd (deflated 76%)
+  adding: rundir/StecklerExample.out (deflated 85%)
+  adding: rundir/StecklerExample_devc.csv (deflated 67%)
+  adding: rundir/StecklerExample_hrr.csv (deflated 76%)
+  adding: rundir/StecklerExample_steps.csv (deflated 74%)
+
+zip file stats: -rw-rw-r-- 1 larnold cobra 1.7M Oct 26 21:13 fdsreader_example_01.zip
+
+########################################
+# Print zip File Contents
+Archive:  fdsreader_example_01.zip
+ Length   Method    Size  Cmpr    Date    Time   CRC-32   Name
+--------  ------  ------- ---- ---------- ----- --------  ----
+       0  Stored        0   0% 10-26-2022 21:09 00000000  rundir/
+    3319  Defl:N      958  71% 10-26-2022 21:09 df3bec85  rundir/example_01.fds
+       2  Stored        2   0% 10-26-2022 21:09 3488df43  rundir/StecklerExample.sinfo
+       2  Stored        2   0% 10-26-2022 21:09 3488df43  rundir/StecklerExample.binfo
+   11789  Defl:N     1748  85% 10-26-2022 21:09 c872000b  rundir/StecklerExample.smv
+      25  Stored       25   0% 10-26-2022 21:09 225dbac7  rundir/StecklerExample_git.txt
+      12  Defl:N       11   8% 10-26-2022 21:09 3b1b6ad9  rundir/StecklerExample.end
+  691125  Defl:N   238463  66% 10-26-2022 21:12 c59d8f8e  rundir/StecklerExample_1_1.s3d
+    3258  Defl:N      844  74% 10-26-2022 21:12 a4113a8c  rundir/StecklerExample_1_1.s3d.sz
+   53505  Defl:N    21575  60% 10-26-2022 21:12 10797b27  rundir/StecklerExample_1_2.s3d
+    3258  Defl:N      521  84% 10-26-2022 21:12 dc3acd5a  rundir/StecklerExample_1_2.s3d.sz
+  644634  Defl:N   222613  66% 10-26-2022 21:12 1450f52c  rundir/StecklerExample_1_3.s3d
+    3258  Defl:N      550  83% 10-26-2022 21:12 a34023d7  rundir/StecklerExample_1_3.s3d.sz
+  158738  Defl:N   134847  15% 10-26-2022 21:12 5a688c6b  rundir/StecklerExample_1_1.sf
+    2478  Defl:N      626  75% 10-26-2022 21:12 f40126a1  rundir/StecklerExample_1_1.sf.bnd
+  223874  Defl:N   190251  15% 10-26-2022 21:12 1bf0e292  rundir/StecklerExample_1_2.sf
+    2478  Defl:N      614  75% 10-26-2022 21:12 1c7fb387  rundir/StecklerExample_1_2.sf.bnd
+  158738  Defl:N   141190  11% 10-26-2022 21:12 08a0296e  rundir/StecklerExample_1_3.sf
+    2478  Defl:N      900  64% 10-26-2022 21:12 dbff8302  rundir/StecklerExample_1_3.sf.bnd
+  223874  Defl:N   204472   9% 10-26-2022 21:12 a3aeabff  rundir/StecklerExample_1_4.sf
+    2478  Defl:N      853  66% 10-26-2022 21:12 fabafff2  rundir/StecklerExample_1_4.sf.bnd
+  281930  Defl:N   263802   6% 10-26-2022 21:12 95a07a8b  rundir/StecklerExample_1_5.sf
+    2478  Defl:N      868  65% 10-26-2022 21:12 5dbf7bc8  rundir/StecklerExample_1_5.sf.bnd
+  364598  Defl:N   280481  23% 10-26-2022 21:12 a86ae22c  rundir/StecklerExample_1_1.bf
+    2478  Defl:N      600  76% 10-26-2022 21:12 4583510e  rundir/StecklerExample_1_1.bf.bnd
+   42918  Defl:N     6549  85% 10-26-2022 21:12 89a77586  rundir/StecklerExample.out
+    3838  Defl:N     1269  67% 10-26-2022 21:12 38225754  rundir/StecklerExample_devc.csv
+   12415  Defl:N     2988  76% 10-26-2022 21:12 c9557c3c  rundir/StecklerExample_hrr.csv
+    3513  Defl:N      930  74% 10-26-2022 21:12 968fcb50  rundir/StecklerExample_steps.csv
+--------          -------  ---                            -------
+ 2903491          1718552  41%                            29 files
+
+########################################
+# Tail -- Pack Case -- fdsreader_example_01
+current time: Wed Oct 26 21:13:04 CEST 2022
+ Time Step:   2900, Simulation Time:     59.21 s
+ Time Step:   3000, Simulation Time:     61.59 s
+ Time Step:   3100, Simulation Time:     64.00 s
+ Time Step:   3200, Simulation Time:     66.30 s
+ Time Step:   3300, Simulation Time:     68.66 s
+ Time Step:   3400, Simulation Time:     70.83 s
+ Time Step:   3500, Simulation Time:     72.96 s
+ Time Step:   3600, Simulation Time:     75.25 s
+ Time Step:   3700, Simulation Time:     77.40 s
+ Time Step:   3800, Simulation Time:     79.72 s
+ Time Step:   3900, Simulation Time:     81.94 s
+ Time Step:   4000, Simulation Time:     84.17 s
+ Time Step:   4100, Simulation Time:     86.41 s
+ Time Step:   4200, Simulation Time:     88.58 s
+ Time Step:   4300, Simulation Time:     90.90 s
+ Time Step:   4400, Simulation Time:     93.32 s
+ Time Step:   4500, Simulation Time:     95.45 s
+ Time Step:   4600, Simulation Time:     97.79 s
+ Time Step:   4700, Simulation Time:    100.03 s
+ Time Step:   4800, Simulation Time:    102.19 s
+ Time Step:   4900, Simulation Time:    104.24 s
+ Time Step:   5000, Simulation Time:    106.50 s
+ Time Step:   5100, Simulation Time:    108.76 s
+ Time Step:   5200, Simulation Time:    111.15 s
+ Time Step:   5300, Simulation Time:    113.51 s
+ Time Step:   5400, Simulation Time:    115.75 s
+ Time Step:   5500, Simulation Time:    117.89 s
+ Time Step:   5600, Simulation Time:    120.15 s
+ Time Step:   5700, Simulation Time:    122.49 s
+ Time Step:   5800, Simulation Time:    124.68 s
+ Time Step:   5900, Simulation Time:    126.99 s
+ Time Step:   6000, Simulation Time:    129.31 s
+ Time Step:   6100, Simulation Time:    131.49 s
+ Time Step:   6200, Simulation Time:    133.77 s
+ Time Step:   6300, Simulation Time:    135.94 s
+ Time Step:   6400, Simulation Time:    138.23 s
+ Time Step:   6500, Simulation Time:    140.44 s
+ Time Step:   6600, Simulation Time:    142.65 s
+ Time Step:   6700, Simulation Time:    144.82 s
+ Time Step:   6800, Simulation Time:    147.07 s
+ Time Step:   6900, Simulation Time:    149.30 s
+ Time Step:   7000, Simulation Time:    151.52 s
+ Time Step:   7100, Simulation Time:    153.66 s
+ Time Step:   7200, Simulation Time:    156.03 s
+ Time Step:   7300, Simulation Time:    158.20 s
+ Time Step:   7400, Simulation Time:    160.44 s
+ Time Step:   7500, Simulation Time:    162.54 s
+ Time Step:   7600, Simulation Time:    164.80 s
+ Time Step:   7700, Simulation Time:    166.88 s
+ Time Step:   7800, Simulation Time:    169.13 s
+ Time Step:   7900, Simulation Time:    171.37 s
+ Time Step:   8000, Simulation Time:    173.52 s
+ Time Step:   8100, Simulation Time:    175.82 s
+ Time Step:   8200, Simulation Time:    178.02 s
+ Time Step:   8300, Simulation Time:    180.29 s
+ Time Step:   8400, Simulation Time:    182.50 s
+ Time Step:   8500, Simulation Time:    184.57 s
+ Time Step:   8600, Simulation Time:    186.78 s
+ Time Step:   8700, Simulation Time:    189.04 s
+ Time Step:   8800, Simulation Time:    191.36 s
+ Time Step:   8900, Simulation Time:    193.57 s
+ Time Step:   9000, Simulation Time:    195.72 s
+ Time Step:   9100, Simulation Time:    197.99 s
+ Time Step:   9200, Simulation Time:    200.33 s
+ Time Step:   9300, Simulation Time:    202.57 s
+ Time Step:   9400, Simulation Time:    204.72 s
+ Time Step:   9500, Simulation Time:    206.92 s
+ Time Step:   9600, Simulation Time:    209.08 s
+ Time Step:   9700, Simulation Time:    211.28 s
+ Time Step:   9800, Simulation Time:    213.36 s
+ Time Step:   9900, Simulation Time:    215.65 s
+ Time Step:  10000, Simulation Time:    217.82 s
+ Time Step:  10100, Simulation Time:    220.02 s
+ Time Step:  10200, Simulation Time:    222.19 s
+ Time Step:  10300, Simulation Time:    224.43 s
+ Time Step:  10400, Simulation Time:    226.70 s
+ Time Step:  10500, Simulation Time:    228.84 s
+ Time Step:  10600, Simulation Time:    231.03 s
+ Time Step:  10700, Simulation Time:    233.06 s
+ Time Step:  10800, Simulation Time:    235.07 s
+ Time Step:  10900, Simulation Time:    237.24 s
+ Time Step:  11000, Simulation Time:    239.40 s
+ Time Step:  11100, Simulation Time:    241.62 s
+ Time Step:  11200, Simulation Time:    243.82 s
+ Time Step:  11300, Simulation Time:    245.96 s
+ Time Step:  11400, Simulation Time:    248.09 s
+ Time Step:  11500, Simulation Time:    250.10 s
+ Time Step:  11600, Simulation Time:    252.35 s
+ Time Step:  11700, Simulation Time:    254.45 s
+ Time Step:  11800, Simulation Time:    256.73 s
+ Time Step:  11900, Simulation Time:    258.96 s
+ Time Step:  12000, Simulation Time:    261.18 s
+ Time Step:  12100, Simulation Time:    263.47 s
+ Time Step:  12200, Simulation Time:    265.74 s
+ Time Step:  12300, Simulation Time:    268.01 s
+ Time Step:  12400, Simulation Time:    270.14 s
+ Time Step:  12500, Simulation Time:    272.39 s
+ Time Step:  12600, Simulation Time:    274.66 s
+ Time Step:  12700, Simulation Time:    276.88 s
+ Time Step:  12800, Simulation Time:    279.02 s
+ Time Step:  12900, Simulation Time:    281.12 s
+ Time Step:  13000, Simulation Time:    283.39 s
+ Time Step:  13100, Simulation Time:    285.56 s
+ Time Step:  13200, Simulation Time:    287.87 s
+ Time Step:  13300, Simulation Time:    290.10 s
+ Time Step:  13400, Simulation Time:    292.20 s
+ Time Step:  13500, Simulation Time:    294.43 s
+ Time Step:  13600, Simulation Time:    296.58 s
+ Time Step:  13700, Simulation Time:    298.80 s
+ Time Step:  13800, Simulation Time:    301.00 s
+ Time Step:  13900, Simulation Time:    303.06 s
+ Time Step:  14000, Simulation Time:    305.22 s
+ Time Step:  14100, Simulation Time:    307.32 s
+ Time Step:  14200, Simulation Time:    309.63 s
+ Time Step:  14300, Simulation Time:    311.88 s
+ Time Step:  14400, Simulation Time:    314.10 s
+ Time Step:  14500, Simulation Time:    316.37 s
+ Time Step:  14600, Simulation Time:    318.55 s
+ Time Step:  14700, Simulation Time:    320.68 s
+ Time Step:  14800, Simulation Time:    322.85 s
+ Time Step:  14900, Simulation Time:    325.12 s
+ Time Step:  15000, Simulation Time:    327.34 s
+ Time Step:  15100, Simulation Time:    329.51 s
+ Time Step:  15200, Simulation Time:    331.76 s
+ Time Step:  15300, Simulation Time:    334.07 s
+ Time Step:  15400, Simulation Time:    336.31 s
+ Time Step:  15500, Simulation Time:    338.49 s
+ Time Step:  15600, Simulation Time:    340.68 s
+ Time Step:  15700, Simulation Time:    342.81 s
+ Time Step:  15800, Simulation Time:    345.11 s
+ Time Step:  15900, Simulation Time:    347.30 s
+ Time Step:  16000, Simulation Time:    349.55 s
+ Time Step:  16100, Simulation Time:    351.79 s
+ Time Step:  16200, Simulation Time:    354.02 s
+ Time Step:  16300, Simulation Time:    356.28 s
+ Time Step:  16400, Simulation Time:    358.30 s
+ Time Step:  16500, Simulation Time:    360.61 s
+ Time Step:  16600, Simulation Time:    362.93 s
+ Time Step:  16700, Simulation Time:    365.14 s
+ Time Step:  16800, Simulation Time:    367.27 s
+ Time Step:  16900, Simulation Time:    369.47 s
+ Time Step:  17000, Simulation Time:    371.54 s
+ Time Step:  17100, Simulation Time:    373.66 s
+ Time Step:  17200, Simulation Time:    375.82 s
+ Time Step:  17300, Simulation Time:    377.99 s
+ Time Step:  17400, Simulation Time:    380.25 s
+ Time Step:  17500, Simulation Time:    382.55 s
+ Time Step:  17600, Simulation Time:    384.60 s
+ Time Step:  17700, Simulation Time:    386.69 s
+ Time Step:  17800, Simulation Time:    389.07 s
+ Time Step:  17900, Simulation Time:    391.35 s
+ Time Step:  18000, Simulation Time:    393.57 s
+ Time Step:  18100, Simulation Time:    395.82 s
+ Time Step:  18200, Simulation Time:    398.08 s
+ Time Step:  18300, Simulation Time:    400.23 s
+ Time Step:  18400, Simulation Time:    402.59 s
+ Time Step:  18500, Simulation Time:    404.56 s
+ Time Step:  18600, Simulation Time:    406.66 s
+ Time Step:  18700, Simulation Time:    408.73 s
+ Time Step:  18800, Simulation Time:    410.91 s
+ Time Step:  18900, Simulation Time:    413.06 s
+ Time Step:  19000, Simulation Time:    415.09 s
+ Time Step:  19100, Simulation Time:    417.21 s
+ Time Step:  19200, Simulation Time:    419.41 s
+ Time Step:  19300, Simulation Time:    421.66 s
+ Time Step:  19400, Simulation Time:    423.83 s
+ Time Step:  19500, Simulation Time:    425.94 s
+ Time Step:  19600, Simulation Time:    428.04 s
+ Time Step:  19700, Simulation Time:    430.17 s
+ Time Step:  19800, Simulation Time:    432.30 s
+ Time Step:  19900, Simulation Time:    434.47 s
+ Time Step:  20000, Simulation Time:    436.71 s
+ Time Step:  20100, Simulation Time:    438.80 s
+ Time Step:  20200, Simulation Time:    441.00 s
+ Time Step:  20300, Simulation Time:    443.26 s
+ Time Step:  20400, Simulation Time:    445.44 s
+ Time Step:  20500, Simulation Time:    447.61 s
+ Time Step:  20600, Simulation Time:    449.79 s
+ Time Step:  20700, Simulation Time:    451.86 s
+ Time Step:  20800, Simulation Time:    454.01 s
+ Time Step:  20900, Simulation Time:    456.11 s
+ Time Step:  21000, Simulation Time:    458.36 s
+ Time Step:  21100, Simulation Time:    460.67 s
+ Time Step:  21200, Simulation Time:    462.87 s
+ Time Step:  21300, Simulation Time:    465.07 s
+ Time Step:  21400, Simulation Time:    467.29 s
+ Time Step:  21500, Simulation Time:    469.28 s
+ Time Step:  21600, Simulation Time:    471.53 s
+ Time Step:  21700, Simulation Time:    473.79 s
+ Time Step:  21800, Simulation Time:    476.02 s
+ Time Step:  21900, Simulation Time:    478.34 s
+ Time Step:  22000, Simulation Time:    480.55 s
+ Time Step:  22100, Simulation Time:    482.72 s
+ Time Step:  22200, Simulation Time:    484.90 s
+ Time Step:  22300, Simulation Time:    487.06 s
+ Time Step:  22400, Simulation Time:    489.23 s
+ Time Step:  22500, Simulation Time:    491.39 s
+ Time Step:  22600, Simulation Time:    493.52 s
+ Time Step:  22700, Simulation Time:    495.70 s
+ Time Step:  22800, Simulation Time:    497.98 s
+ Time Step:  22900, Simulation Time:    500.16 s
+ Time Step:  23000, Simulation Time:    502.38 s
+ Time Step:  23100, Simulation Time:    504.62 s
+ Time Step:  23200, Simulation Time:    506.73 s
+ Time Step:  23300, Simulation Time:    508.67 s
+ Time Step:  23400, Simulation Time:    510.95 s
+ Time Step:  23500, Simulation Time:    513.09 s
+ Time Step:  23600, Simulation Time:    515.21 s
+ Time Step:  23700, Simulation Time:    517.40 s
+ Time Step:  23800, Simulation Time:    519.66 s
+ Time Step:  23900, Simulation Time:    521.82 s
+ Time Step:  24000, Simulation Time:    523.94 s
+ Time Step:  24100, Simulation Time:    526.18 s
+ Time Step:  24200, Simulation Time:    528.34 s
+ Time Step:  24300, Simulation Time:    530.42 s
+ Time Step:  24400, Simulation Time:    532.55 s
+ Time Step:  24500, Simulation Time:    534.60 s
+ Time Step:  24600, Simulation Time:    536.68 s
+ Time Step:  24700, Simulation Time:    538.94 s
+ Time Step:  24800, Simulation Time:    541.14 s
+ Time Step:  24900, Simulation Time:    543.42 s
+ Time Step:  25000, Simulation Time:    545.66 s
+ Time Step:  25100, Simulation Time:    547.93 s
+ Time Step:  25200, Simulation Time:    550.13 s
+ Time Step:  25300, Simulation Time:    552.24 s
+ Time Step:  25400, Simulation Time:    554.40 s
+ Time Step:  25500, Simulation Time:    556.55 s
+ Time Step:  25600, Simulation Time:    558.64 s
+ Time Step:  25700, Simulation Time:    560.86 s
+ Time Step:  25800, Simulation Time:    563.14 s
+ Time Step:  25900, Simulation Time:    565.38 s
+ Time Step:  26000, Simulation Time:    567.60 s
+ Time Step:  26100, Simulation Time:    569.70 s
+ Time Step:  26200, Simulation Time:    571.92 s
+ Time Step:  26300, Simulation Time:    574.06 s
+ Time Step:  26400, Simulation Time:    576.14 s
+ Time Step:  26500, Simulation Time:    578.36 s
+ Time Step:  26600, Simulation Time:    580.61 s
+ Time Step:  26700, Simulation Time:    582.97 s
+ Time Step:  26800, Simulation Time:    585.15 s
+ Time Step:  26900, Simulation Time:    587.39 s
+ Time Step:  27000, Simulation Time:    589.72 s
+ Time Step:  27100, Simulation Time:    592.00 s
+ Time Step:  27200, Simulation Time:    594.07 s
+ Time Step:  27300, Simulation Time:    596.20 s
+ Time Step:  27400, Simulation Time:    598.42 s
+ Time Step:  27500, Simulation Time:    600.78 s
+ Time Step:  27600, Simulation Time:    602.95 s
+ Time Step:  27700, Simulation Time:    605.17 s
+ Time Step:  27800, Simulation Time:    607.27 s
+ Time Step:  27900, Simulation Time:    609.33 s
+ Time Step:  28000, Simulation Time:    611.46 s
+ Time Step:  28100, Simulation Time:    613.59 s
+ Time Step:  28200, Simulation Time:    615.78 s
+ Time Step:  28300, Simulation Time:    618.03 s
+ Time Step:  28400, Simulation Time:    620.15 s
+ Time Step:  28500, Simulation Time:    622.34 s
+ Time Step:  28600, Simulation Time:    624.52 s
+ Time Step:  28700, Simulation Time:    626.83 s
+ Time Step:  28800, Simulation Time:    629.09 s
+ Time Step:  28900, Simulation Time:    631.29 s
+ Time Step:  29000, Simulation Time:    633.38 s
+ Time Step:  29100, Simulation Time:    635.62 s
+ Time Step:  29200, Simulation Time:    637.94 s
+ Time Step:  29300, Simulation Time:    640.26 s
+ Time Step:  29400, Simulation Time:    642.54 s
+ Time Step:  29500, Simulation Time:    644.55 s
+ Time Step:  29600, Simulation Time:    646.65 s
+ Time Step:  29700, Simulation Time:    648.73 s
+ Time Step:  29800, Simulation Time:    650.81 s
+ Time Step:  29900, Simulation Time:    653.02 s
+ Time Step:  30000, Simulation Time:    655.25 s
+ Time Step:  30100, Simulation Time:    657.44 s
+ Time Step:  30200, Simulation Time:    659.55 s
+ Time Step:  30300, Simulation Time:    661.57 s
+ Time Step:  30400, Simulation Time:    663.74 s
+ Time Step:  30500, Simulation Time:    665.81 s
+ Time Step:  30600, Simulation Time:    668.04 s
+ Time Step:  30700, Simulation Time:    670.18 s
+ Time Step:  30800, Simulation Time:    672.36 s
+ Time Step:  30900, Simulation Time:    674.41 s
+ Time Step:  31000, Simulation Time:    676.71 s
+ Time Step:  31100, Simulation Time:    679.01 s
+ Time Step:  31200, Simulation Time:    680.97 s
+ Time Step:  31300, Simulation Time:    683.10 s
+ Time Step:  31400, Simulation Time:    685.22 s
+ Time Step:  31500, Simulation Time:    687.30 s
+ Time Step:  31600, Simulation Time:    689.49 s
+ Time Step:  31700, Simulation Time:    691.59 s
+ Time Step:  31800, Simulation Time:    693.86 s
+ Time Step:  31900, Simulation Time:    696.04 s
+ Time Step:  32000, Simulation Time:    698.22 s
+ Time Step:  32100, Simulation Time:    700.35 s
+ Time Step:  32200, Simulation Time:    702.53 s
+ Time Step:  32300, Simulation Time:    704.65 s
+ Time Step:  32400, Simulation Time:    706.85 s
+ Time Step:  32500, Simulation Time:    709.10 s
+ Time Step:  32600, Simulation Time:    711.18 s
+ Time Step:  32700, Simulation Time:    713.27 s
+ Time Step:  32800, Simulation Time:    715.29 s
+ Time Step:  32900, Simulation Time:    717.31 s
+ Time Step:  33000, Simulation Time:    719.50 s
+ Time Step:  33100, Simulation Time:    721.48 s
+ Time Step:  33200, Simulation Time:    723.65 s
+ Time Step:  33300, Simulation Time:    725.76 s
+ Time Step:  33400, Simulation Time:    727.96 s
+ Time Step:  33500, Simulation Time:    730.18 s
+ Time Step:  33600, Simulation Time:    732.27 s
+ Time Step:  33700, Simulation Time:    734.39 s
+ Time Step:  33800, Simulation Time:    736.47 s
+ Time Step:  33900, Simulation Time:    738.66 s
+ Time Step:  34000, Simulation Time:    740.67 s
+ Time Step:  34100, Simulation Time:    742.92 s
+ Time Step:  34200, Simulation Time:    744.97 s
+ Time Step:  34300, Simulation Time:    747.12 s
+ Time Step:  34400, Simulation Time:    749.36 s
+ Time Step:  34500, Simulation Time:    751.52 s
+ Time Step:  34600, Simulation Time:    753.58 s
+ Time Step:  34700, Simulation Time:    755.53 s
+ Time Step:  34800, Simulation Time:    757.81 s
+ Time Step:  34900, Simulation Time:    759.97 s
+ Time Step:  35000, Simulation Time:    762.17 s
+ Time Step:  35100, Simulation Time:    764.34 s
+ Time Step:  35200, Simulation Time:    766.40 s
+ Time Step:  35300, Simulation Time:    768.56 s
+ Time Step:  35400, Simulation Time:    770.86 s
+ Time Step:  35500, Simulation Time:    773.00 s
+ Time Step:  35600, Simulation Time:    775.24 s
+ Time Step:  35700, Simulation Time:    777.41 s
+ Time Step:  35800, Simulation Time:    779.61 s
+ Time Step:  35900, Simulation Time:    781.74 s
+ Time Step:  36000, Simulation Time:    783.77 s
+########################################
+# Header -- Pack Case -- fdsreader_example_01
+label: fdsreader_example_01
+current time: Wed Oct 26 21:51:19 CEST 2022
+user: larnold
+machine: ana21001.pleiades.uni-wuppertal.de
+
+########################################
+# Directory Contents
+total 1.8M
+drwxrwxr-x 3 larnold cobra  233 Oct 26 21:13 .
+drwxrwxr-x 4 larnold cobra   54 Oct 26 18:16 ..
+-rw-rw-r-- 1 larnold cobra 1.5K Oct 26 21:06 case_download.sh
+-rw-rw-r-- 1 larnold cobra 1.8K Oct 26 18:04 case_pack.sh
+-rw-rw-r-- 1 larnold cobra 2.4K Oct 26 18:04 case_run.sh
+-rw-rw-r-- 1 larnold cobra 3.3K Oct 26 21:09 example_01.fds
+-rw-rw-r-- 1 larnold cobra  17K Oct 26 21:13 fdsreader_example_01.log
+-rw-rw-r-- 1 larnold cobra 1.7M Oct 26 21:13 fdsreader_example_01.zip
+-rw-rw-r-- 1 larnold cobra   20 Oct 26 18:04 label
+-rw-rw-r-- 1 larnold cobra  33K Oct 26 21:51 log
+drwxrwxr-x 2 larnold cobra 4.0K Oct 26 21:09 rundir
+
+########################################
+# zip Version
+Copyright (c) 1990-2008 Info-ZIP - Type 'zip "-L"' for software license.
+This is Zip 3.0 (July 5th 2008), by Info-ZIP.
+Currently maintained by E. Gordon.  Please send bug reports to
+the authors using the web page at www.info-zip.org; see README for details.
+
+Latest sources and executables are at ftp://ftp.info-zip.org/pub/infozip,
+as of above date; see http://www.info-zip.org/ for other sites.
+
+Compiled with gcc 4.8.5 20150623 (Red Hat 4.8.5-11) for Unix (Linux ELF) on Nov  5 2016.
+
+Zip special compilation options:
+	USE_EF_UT_TIME       (store Universal Time)
+	BZIP2_SUPPORT        (bzip2 library version 1.0.6, 6-Sept-2010)
+	    bzip2 code and library copyright (c) Julian R Seward
+	    (See the bzip2 license for terms of use)
+	SYMLINK_SUPPORT      (symbolic links supported)
+	LARGE_FILE_SUPPORT   (can read and write large files on file system)
+	ZIP64_SUPPORT        (use Zip64 to store large files in archives)
+	UNICODE_SUPPORT      (store and read UTF-8 Unicode paths)
+	STORE_UNIX_UIDs_GIDs (store UID/GID sizes/values using new extra field)
+	UIDGID_NOT_16BIT     (old Unix 16-bit UID/GID extra field not used)
+	[encryption, version 2.91 of 05 Jan 2007] (modified for Zip 3)
+
+Encryption notice:
+	The encryption code of this program is not copyrighted and is
+	put in the public domain.  It was originally written in Europe
+	and, to the best of our knowledge, can be freely distributed
+	in both source and object forms from any country, including
+	the USA under License Exception TSU of the U.S. Export
+	Administration Regulations (section 740.13(e)) of 6 June 2002.
+
+Zip environment options:
+             ZIP:  [none]
+          ZIPOPT:  [none]
+
+########################################
+# Print Run Directory Contents
+total 49M
+drwxrwxr-x 2 larnold cobra 4.0K Oct 26 21:09 .
+drwxrwxr-x 3 larnold cobra  233 Oct 26 21:13 ..
+-rw-rw-r-- 1 larnold cobra 3.3K Oct 26 21:09 example_01.fds
+-rw-rw-r-- 1 larnold cobra 4.7M Oct 26 21:51 StecklerExample_1_1.bf
+-rw-rw-r-- 1 larnold cobra  33K Oct 26 21:51 StecklerExample_1_1.bf.bnd
+-rw-rw-r-- 1 larnold cobra  10M Oct 26 21:51 StecklerExample_1_1.s3d
+-rw-rw-r-- 1 larnold cobra  43K Oct 26 21:51 StecklerExample_1_1.s3d.sz
+-rw-rw-r-- 1 larnold cobra 2.1M Oct 26 21:51 StecklerExample_1_1.sf
+-rw-rw-r-- 1 larnold cobra  33K Oct 26 21:51 StecklerExample_1_1.sf.bnd
+-rw-rw-r-- 1 larnold cobra 739K Oct 26 21:51 StecklerExample_1_2.s3d
+-rw-rw-r-- 1 larnold cobra  43K Oct 26 21:51 StecklerExample_1_2.s3d.sz
+-rw-rw-r-- 1 larnold cobra 2.9M Oct 26 21:51 StecklerExample_1_2.sf
+-rw-rw-r-- 1 larnold cobra  33K Oct 26 21:51 StecklerExample_1_2.sf.bnd
+-rw-rw-r-- 1 larnold cobra  10M Oct 26 21:51 StecklerExample_1_3.s3d
+-rw-rw-r-- 1 larnold cobra  43K Oct 26 21:51 StecklerExample_1_3.s3d.sz
+-rw-rw-r-- 1 larnold cobra 2.1M Oct 26 21:51 StecklerExample_1_3.sf
+-rw-rw-r-- 1 larnold cobra  33K Oct 26 21:51 StecklerExample_1_3.sf.bnd
+-rw-rw-r-- 1 larnold cobra 2.9M Oct 26 21:51 StecklerExample_1_4.sf
+-rw-rw-r-- 1 larnold cobra  33K Oct 26 21:51 StecklerExample_1_4.sf.bnd
+-rw-rw-r-- 1 larnold cobra 3.6M Oct 26 21:51 StecklerExample_1_5.sf
+-rw-rw-r-- 1 larnold cobra  33K Oct 26 21:51 StecklerExample_1_5.sf.bnd
+-rw-rw-r-- 1 larnold cobra    2 Oct 26 21:09 StecklerExample.binfo
+-rw-rw-r-- 1 larnold cobra  50K Oct 26 21:51 StecklerExample_devc.csv
+-rw-rw-r-- 1 larnold cobra   12 Oct 26 21:09 StecklerExample.end
+-rw-rw-r-- 1 larnold cobra   25 Oct 26 21:09 StecklerExample_git.txt
+-rw-rw-r-- 1 larnold cobra 160K Oct 26 21:51 StecklerExample_hrr.csv
+-rw-rw-r-- 1 larnold cobra 250K Oct 26 21:51 StecklerExample.out
+-rw-rw-r-- 1 larnold cobra    2 Oct 26 21:09 StecklerExample.sinfo
+-rw-rw-r-- 1 larnold cobra  12K Oct 26 21:09 StecklerExample.smv
+-rw-rw-r-- 1 larnold cobra  28K Oct 26 21:51 StecklerExample_steps.csv
+
+########################################
+# zip Command
+INFO: Run directory older than zip file. Skipping execution.
+Modification time run dir  : 2022-10-26 21:09:37
+Modification time zip file : 2022-10-26 21:13:04
+
+zip file stats: -rw-rw-r-- 1 larnold cobra 1.7M Oct 26 21:13 fdsreader_example_01.zip
+
+########################################
+# Print zip File Contents
+Archive:  fdsreader_example_01.zip
+ Length   Method    Size  Cmpr    Date    Time   CRC-32   Name
+--------  ------  ------- ---- ---------- ----- --------  ----
+       0  Stored        0   0% 10-26-2022 21:09 00000000  rundir/
+    3319  Defl:N      958  71% 10-26-2022 21:09 df3bec85  rundir/example_01.fds
+       2  Stored        2   0% 10-26-2022 21:09 3488df43  rundir/StecklerExample.sinfo
+       2  Stored        2   0% 10-26-2022 21:09 3488df43  rundir/StecklerExample.binfo
+   11789  Defl:N     1748  85% 10-26-2022 21:09 c872000b  rundir/StecklerExample.smv
+      25  Stored       25   0% 10-26-2022 21:09 225dbac7  rundir/StecklerExample_git.txt
+      12  Defl:N       11   8% 10-26-2022 21:09 3b1b6ad9  rundir/StecklerExample.end
+  691125  Defl:N   238463  66% 10-26-2022 21:12 c59d8f8e  rundir/StecklerExample_1_1.s3d
+    3258  Defl:N      844  74% 10-26-2022 21:12 a4113a8c  rundir/StecklerExample_1_1.s3d.sz
+   53505  Defl:N    21575  60% 10-26-2022 21:12 10797b27  rundir/StecklerExample_1_2.s3d
+    3258  Defl:N      521  84% 10-26-2022 21:12 dc3acd5a  rundir/StecklerExample_1_2.s3d.sz
+  644634  Defl:N   222613  66% 10-26-2022 21:12 1450f52c  rundir/StecklerExample_1_3.s3d
+    3258  Defl:N      550  83% 10-26-2022 21:12 a34023d7  rundir/StecklerExample_1_3.s3d.sz
+  158738  Defl:N   134847  15% 10-26-2022 21:12 5a688c6b  rundir/StecklerExample_1_1.sf
+    2478  Defl:N      626  75% 10-26-2022 21:12 f40126a1  rundir/StecklerExample_1_1.sf.bnd
+  223874  Defl:N   190251  15% 10-26-2022 21:12 1bf0e292  rundir/StecklerExample_1_2.sf
+    2478  Defl:N      614  75% 10-26-2022 21:12 1c7fb387  rundir/StecklerExample_1_2.sf.bnd
+  158738  Defl:N   141190  11% 10-26-2022 21:12 08a0296e  rundir/StecklerExample_1_3.sf
+    2478  Defl:N      900  64% 10-26-2022 21:12 dbff8302  rundir/StecklerExample_1_3.sf.bnd
+  223874  Defl:N   204472   9% 10-26-2022 21:12 a3aeabff  rundir/StecklerExample_1_4.sf
+    2478  Defl:N      853  66% 10-26-2022 21:12 fabafff2  rundir/StecklerExample_1_4.sf.bnd
+  281930  Defl:N   263802   6% 10-26-2022 21:12 95a07a8b  rundir/StecklerExample_1_5.sf
+    2478  Defl:N      868  65% 10-26-2022 21:12 5dbf7bc8  rundir/StecklerExample_1_5.sf.bnd
+  364598  Defl:N   280481  23% 10-26-2022 21:12 a86ae22c  rundir/StecklerExample_1_1.bf
+    2478  Defl:N      600  76% 10-26-2022 21:12 4583510e  rundir/StecklerExample_1_1.bf.bnd
+   42918  Defl:N     6549  85% 10-26-2022 21:12 89a77586  rundir/StecklerExample.out
+    3838  Defl:N     1269  67% 10-26-2022 21:12 38225754  rundir/StecklerExample_devc.csv
+   12415  Defl:N     2988  76% 10-26-2022 21:12 c9557c3c  rundir/StecklerExample_hrr.csv
+    3513  Defl:N      930  74% 10-26-2022 21:12 968fcb50  rundir/StecklerExample_steps.csv
+--------          -------  ---                            -------
+ 2903491          1718552  41%                            29 files
+
+########################################
+# Tail -- Pack Case -- fdsreader_example_01
+current time: Wed Oct 26 21:51:19 CEST 2022
+ Time Step:  36100, Simulation Time:    785.79 s
+ Time Step:  36200, Simulation Time:    787.97 s
+ Time Step:  36300, Simulation Time:    790.06 s
+ Time Step:  36400, Simulation Time:    792.16 s
+ Time Step:  36500, Simulation Time:    794.29 s
+ Time Step:  36600, Simulation Time:    796.29 s
+ Time Step:  36700, Simulation Time:    798.38 s
+ Time Step:  36800, Simulation Time:    800.73 s
+ Time Step:  36900, Simulation Time:    802.93 s
+ Time Step:  37000, Simulation Time:    805.22 s
+ Time Step:  37100, Simulation Time:    807.35 s
+ Time Step:  37200, Simulation Time:    809.61 s
+ Time Step:  37300, Simulation Time:    811.77 s
+ Time Step:  37400, Simulation Time:    813.79 s
+ Time Step:  37500, Simulation Time:    815.75 s
+ Time Step:  37600, Simulation Time:    817.89 s
+ Time Step:  37700, Simulation Time:    820.02 s
+ Time Step:  37800, Simulation Time:    822.18 s
+ Time Step:  37900, Simulation Time:    824.31 s
+ Time Step:  38000, Simulation Time:    826.51 s
+ Time Step:  38100, Simulation Time:    828.58 s
+ Time Step:  38200, Simulation Time:    830.69 s
+ Time Step:  38300, Simulation Time:    832.85 s
+ Time Step:  38400, Simulation Time:    834.99 s
+ Time Step:  38500, Simulation Time:    837.06 s
+ Time Step:  38600, Simulation Time:    839.14 s
+ Time Step:  38700, Simulation Time:    841.30 s
+ Time Step:  38800, Simulation Time:    843.51 s
+ Time Step:  38900, Simulation Time:    845.66 s
+ Time Step:  39000, Simulation Time:    847.77 s
+ Time Step:  39100, Simulation Time:    849.99 s
+ Time Step:  39200, Simulation Time:    852.17 s
+ Time Step:  39300, Simulation Time:    854.31 s
+ Time Step:  39400, Simulation Time:    856.53 s
+ Time Step:  39500, Simulation Time:    858.82 s
+ Time Step:  39600, Simulation Time:    861.14 s
+ Time Step:  39700, Simulation Time:    863.30 s
+ Time Step:  39800, Simulation Time:    865.37 s
+ Time Step:  39900, Simulation Time:    867.62 s
+ Time Step:  40000, Simulation Time:    869.84 s
+ Time Step:  40100, Simulation Time:    871.99 s
+ Time Step:  40200, Simulation Time:    874.11 s
+ Time Step:  40300, Simulation Time:    876.34 s
+ Time Step:  40400, Simulation Time:    878.51 s
+ Time Step:  40500, Simulation Time:    880.66 s
+ Time Step:  40600, Simulation Time:    882.75 s
+ Time Step:  40700, Simulation Time:    884.92 s
+ Time Step:  40800, Simulation Time:    887.11 s
+ Time Step:  40900, Simulation Time:    889.16 s
+ Time Step:  41000, Simulation Time:    891.43 s
+ Time Step:  41100, Simulation Time:    893.58 s
+ Time Step:  41200, Simulation Time:    895.85 s
+ Time Step:  41300, Simulation Time:    897.91 s
+ Time Step:  41400, Simulation Time:    900.04 s
+ Time Step:  41500, Simulation Time:    902.15 s
+ Time Step:  41600, Simulation Time:    904.43 s
+ Time Step:  41700, Simulation Time:    906.53 s
+ Time Step:  41800, Simulation Time:    908.74 s
+ Time Step:  41900, Simulation Time:    910.88 s
+ Time Step:  42000, Simulation Time:    913.04 s
+ Time Step:  42100, Simulation Time:    915.13 s
+ Time Step:  42200, Simulation Time:    917.26 s
+ Time Step:  42300, Simulation Time:    919.52 s
+ Time Step:  42400, Simulation Time:    921.70 s
+ Time Step:  42500, Simulation Time:    923.90 s
+ Time Step:  42600, Simulation Time:    926.10 s
+ Time Step:  42700, Simulation Time:    928.36 s
+ Time Step:  42800, Simulation Time:    930.64 s
+ Time Step:  42900, Simulation Time:    932.85 s
+########################################
+# Header -- Pack Case -- fdsreader_example_01
+label: fdsreader_example_01
+current time: Wed Oct 26 21:59:39 CEST 2022
+user: larnold
+machine: ana21001.pleiades.uni-wuppertal.de
+
+########################################
+# Directory Contents
+total 72K
+drwxrwxr-x 3 larnold cobra  161 Oct 26 21:59 .
+drwxrwxr-x 4 larnold cobra   54 Oct 26 18:16 ..
+-rw-rw-r-- 1 larnold cobra 1.5K Oct 26 21:06 case_download.sh
+-rw-rw-r-- 1 larnold cobra 1.8K Oct 26 18:04 case_pack.sh
+-rw-rw-r-- 1 larnold cobra 2.4K Oct 26 18:04 case_run.sh
+-rw-rw-r-- 1 larnold cobra 3.3K Oct 26 21:09 example_01.fds
+-rw-rw-r-- 1 larnold cobra   20 Oct 26 18:04 label
+-rw-rw-r-- 1 larnold cobra  45K Oct 26 21:59 log
+drwxrwxr-x 2 larnold cobra 4.0K Oct 26 21:09 rundir
+
+########################################
+# zip Version
+Copyright (c) 1990-2008 Info-ZIP - Type 'zip "-L"' for software license.
+This is Zip 3.0 (July 5th 2008), by Info-ZIP.
+Currently maintained by E. Gordon.  Please send bug reports to
+the authors using the web page at www.info-zip.org; see README for details.
+
+Latest sources and executables are at ftp://ftp.info-zip.org/pub/infozip,
+as of above date; see http://www.info-zip.org/ for other sites.
+
+Compiled with gcc 4.8.5 20150623 (Red Hat 4.8.5-11) for Unix (Linux ELF) on Nov  5 2016.
+
+Zip special compilation options:
+	USE_EF_UT_TIME       (store Universal Time)
+	BZIP2_SUPPORT        (bzip2 library version 1.0.6, 6-Sept-2010)
+	    bzip2 code and library copyright (c) Julian R Seward
+	    (See the bzip2 license for terms of use)
+	SYMLINK_SUPPORT      (symbolic links supported)
+	LARGE_FILE_SUPPORT   (can read and write large files on file system)
+	ZIP64_SUPPORT        (use Zip64 to store large files in archives)
+	UNICODE_SUPPORT      (store and read UTF-8 Unicode paths)
+	STORE_UNIX_UIDs_GIDs (store UID/GID sizes/values using new extra field)
+	UIDGID_NOT_16BIT     (old Unix 16-bit UID/GID extra field not used)
+	[encryption, version 2.91 of 05 Jan 2007] (modified for Zip 3)
+
+Encryption notice:
+	The encryption code of this program is not copyrighted and is
+	put in the public domain.  It was originally written in Europe
+	and, to the best of our knowledge, can be freely distributed
+	in both source and object forms from any country, including
+	the USA under License Exception TSU of the U.S. Export
+	Administration Regulations (section 740.13(e)) of 6 June 2002.
+
+Zip environment options:
+             ZIP:  [none]
+          ZIPOPT:  [none]
+
+########################################
+# Print Run Directory Contents
+total 69M
+drwxrwxr-x 2 larnold cobra 4.0K Oct 26 21:09 .
+drwxrwxr-x 3 larnold cobra  161 Oct 26 21:59 ..
+-rw-rw-r-- 1 larnold cobra 3.3K Oct 26 21:09 example_01.fds
+-rw-rw-r-- 1 larnold cobra 5.6M Oct 26 21:59 StecklerExample_1_1.bf
+-rw-rw-r-- 1 larnold cobra  39K Oct 26 21:59 StecklerExample_1_1.bf.bnd
+-rw-rw-r-- 1 larnold cobra  12M Oct 26 21:59 StecklerExample_1_1.s3d
+-rw-rw-r-- 1 larnold cobra  51K Oct 26 21:59 StecklerExample_1_1.s3d.sz
+-rw-rw-r-- 1 larnold cobra 2.4M Oct 26 21:59 StecklerExample_1_1.sf
+-rw-rw-r-- 1 larnold cobra  39K Oct 26 21:59 StecklerExample_1_1.sf.bnd
+-rw-rw-r-- 1 larnold cobra 880K Oct 26 21:59 StecklerExample_1_2.s3d
+-rw-rw-r-- 1 larnold cobra  51K Oct 26 21:59 StecklerExample_1_2.s3d.sz
+-rw-rw-r-- 1 larnold cobra 3.4M Oct 26 21:59 StecklerExample_1_2.sf
+-rw-rw-r-- 1 larnold cobra  39K Oct 26 21:59 StecklerExample_1_2.sf.bnd
+-rw-rw-r-- 1 larnold cobra  12M Oct 26 21:59 StecklerExample_1_3.s3d
+-rw-rw-r-- 1 larnold cobra  51K Oct 26 21:59 StecklerExample_1_3.s3d.sz
+-rw-rw-r-- 1 larnold cobra 2.4M Oct 26 21:59 StecklerExample_1_3.sf
+-rw-rw-r-- 1 larnold cobra  39K Oct 26 21:59 StecklerExample_1_3.sf.bnd
+-rw-rw-r-- 1 larnold cobra 3.4M Oct 26 21:59 StecklerExample_1_4.sf
+-rw-rw-r-- 1 larnold cobra  39K Oct 26 21:59 StecklerExample_1_4.sf.bnd
+-rw-rw-r-- 1 larnold cobra 4.3M Oct 26 21:59 StecklerExample_1_5.sf
+-rw-rw-r-- 1 larnold cobra  39K Oct 26 21:59 StecklerExample_1_5.sf.bnd
+-rw-rw-r-- 1 larnold cobra    2 Oct 26 21:09 StecklerExample.binfo
+-rw-rw-r-- 1 larnold cobra  59K Oct 26 21:59 StecklerExample_devc.csv
+-rw-rw-r-- 1 larnold cobra   12 Oct 26 21:09 StecklerExample.end
+-rw-rw-r-- 1 larnold cobra   25 Oct 26 21:09 StecklerExample_git.txt
+-rw-rw-r-- 1 larnold cobra 191K Oct 26 21:59 StecklerExample_hrr.csv
+-rw-rw-r-- 1 larnold cobra 293K Oct 26 21:59 StecklerExample.out
+-rw-rw-r-- 1 larnold cobra    2 Oct 26 21:09 StecklerExample.sinfo
+-rw-rw-r-- 1 larnold cobra  12K Oct 26 21:09 StecklerExample.smv
+-rw-rw-r-- 1 larnold cobra  33K Oct 26 21:59 StecklerExample_steps.csv
+
+########################################
+# zip Command
+  adding: rundir/ (stored 0%)
+  adding: rundir/example_01.fds (deflated 71%)
+  adding: rundir/StecklerExample.sinfo (stored 0%)
+  adding: rundir/StecklerExample.binfo (stored 0%)
+  adding: rundir/StecklerExample.smv (deflated 85%)
+  adding: rundir/StecklerExample_git.txt (stored 0%)
+  adding: rundir/StecklerExample.end (deflated 8%)
+  adding: rundir/StecklerExample_1_1.s3d (deflated 66%)
+  adding: rundir/StecklerExample_1_1.s3d.sz (deflated 77%)
+  adding: rundir/StecklerExample_1_2.s3d (deflated 61%)
+  adding: rundir/StecklerExample_1_2.s3d.sz (deflated 87%)
+  adding: rundir/StecklerExample_1_3.s3d (deflated 66%)
+  adding: rundir/StecklerExample_1_3.s3d.sz (deflated 86%)
+  adding: rundir/StecklerExample_1_1.sf (deflated 13%)
+  adding: rundir/StecklerExample_1_1.sf.bnd (deflated 78%)
+  adding: rundir/StecklerExample_1_2.sf (deflated 13%)
+  adding: rundir/StecklerExample_1_2.sf.bnd (deflated 78%)
+  adding: rundir/StecklerExample_1_3.sf (deflated 11%)
+  adding: rundir/StecklerExample_1_3.sf.bnd (deflated 67%)
+  adding: rundir/StecklerExample_1_4.sf (deflated 8%)
+  adding: rundir/StecklerExample_1_4.sf.bnd (deflated 69%)
+  adding: rundir/StecklerExample_1_5.sf (deflated 6%)
+  adding: rundir/StecklerExample_1_5.sf.bnd (deflated 68%)
+  adding: rundir/StecklerExample_1_1.bf (deflated 23%)
+  adding: rundir/StecklerExample_1_1.bf.bnd (deflated 78%)
+  adding: rundir/StecklerExample.out (deflated 91%)
+  adding: rundir/StecklerExample_devc.csv (deflated 70%)
+  adding: rundir/StecklerExample_hrr.csv (deflated 78%)
+  adding: rundir/StecklerExample_steps.csv (deflated 75%)
+
+zip file stats: -rw-rw-r-- 1 larnold cobra 28M Oct 26 21:59 fdsreader_example_01.zip
+
+########################################
+# Print zip File Contents
+Archive:  fdsreader_example_01.zip
+ Length   Method    Size  Cmpr    Date    Time   CRC-32   Name
+--------  ------  ------- ---- ---------- ----- --------  ----
+       0  Stored        0   0% 10-26-2022 21:09 00000000  rundir/
+    3319  Defl:N      958  71% 10-26-2022 21:09 df3bec85  rundir/example_01.fds
+       2  Stored        2   0% 10-26-2022 21:09 3488df43  rundir/StecklerExample.sinfo
+       2  Stored        2   0% 10-26-2022 21:09 3488df43  rundir/StecklerExample.binfo
+   11789  Defl:N     1748  85% 10-26-2022 21:09 c872000b  rundir/StecklerExample.smv
+      25  Stored       25   0% 10-26-2022 21:09 225dbac7  rundir/StecklerExample_git.txt
+      12  Defl:N       11   8% 10-26-2022 21:09 3b1b6ad9  rundir/StecklerExample.end
+12405267  Defl:N  4242932  66% 10-26-2022 21:59 be277d0c  rundir/StecklerExample_1_1.s3d
+   51438  Defl:N    11595  78% 10-26-2022 21:59 f6ce72de  rundir/StecklerExample_1_1.s3d.sz
+  900470  Defl:N   353506  61% 10-26-2022 21:59 7355e701  rundir/StecklerExample_1_2.s3d
+   51438  Defl:N     6567  87% 10-26-2022 21:59 d6a88b0b  rundir/StecklerExample_1_2.s3d.sz
+12459305  Defl:N  4285172  66% 10-26-2022 21:59 9736a162  rundir/StecklerExample_1_3.s3d
+   51438  Defl:N     7232  86% 10-26-2022 21:59 87a21cd7  rundir/StecklerExample_1_3.s3d.sz
+ 2513426  Defl:N  2183999  13% 10-26-2022 21:59 374ed687  rundir/StecklerExample_1_1.sf
+   39270  Defl:N     8722  78% 10-26-2022 21:59 d6edd831  rundir/StecklerExample_1_1.sf.bnd
+ 3545666  Defl:N  3099025  13% 10-26-2022 21:59 6cfe3c7d  rundir/StecklerExample_1_2.sf
+   39270  Defl:N     8705  78% 10-26-2022 21:59 796e32c4  rundir/StecklerExample_1_2.sf.bnd
+ 2513426  Defl:N  2231491  11% 10-26-2022 21:59 ca8970c8  rundir/StecklerExample_1_3.sf
+   39270  Defl:N    12902  67% 10-26-2022 21:59 b6495e5c  rundir/StecklerExample_1_3.sf.bnd
+ 3545666  Defl:N  3247519   8% 10-26-2022 21:59 8b67001d  rundir/StecklerExample_1_4.sf
+   39270  Defl:N    12042  69% 10-26-2022 21:59 579d45ef  rundir/StecklerExample_1_4.sf.bnd
+ 4465706  Defl:N  4184063   6% 10-26-2022 21:59 e1d677d7  rundir/StecklerExample_1_5.sf
+   39270  Defl:N    12523  68% 10-26-2022 21:59 f0c926ac  rundir/StecklerExample_1_5.sf.bnd
+ 5774774  Defl:N  4455982  23% 10-26-2022 21:59 e1a80794  rundir/StecklerExample_1_1.bf
+   39270  Defl:N     8613  78% 10-26-2022 21:59 b6e0388a  rundir/StecklerExample_1_1.bf.bnd
+  299150  Defl:N    27693  91% 10-26-2022 21:59 0a2e17db  rundir/StecklerExample.out
+   59902  Defl:N    18133  70% 10-26-2022 21:59 71b33c72  rundir/StecklerExample_devc.csv
+  194623  Defl:N    42724  78% 10-26-2022 21:59 fe3ef4c9  rundir/StecklerExample_hrr.csv
+   33588  Defl:N     8556  75% 10-26-2022 21:59 1c0ba7f3  rundir/StecklerExample_steps.csv
+--------          -------  ---                            -------
+49116052         28472442  42%                            29 files
+
+########################################
+# Tail -- Pack Case -- fdsreader_example_01
+current time: Wed Oct 26 21:59:42 CEST 2022
+ Time Step:  43000, Simulation Time:    935.03 s
+ Time Step:  43100, Simulation Time:    937.03 s
+ Time Step:  43200, Simulation Time:    939.31 s
+ Time Step:  43300, Simulation Time:    941.41 s
+ Time Step:  43400, Simulation Time:    943.37 s
+ Time Step:  43500, Simulation Time:    945.65 s
+ Time Step:  43600, Simulation Time:    947.65 s
+ Time Step:  43700, Simulation Time:    949.81 s
+ Time Step:  43800, Simulation Time:    951.89 s
+ Time Step:  43900, Simulation Time:    953.91 s
+ Time Step:  44000, Simulation Time:    956.05 s
+ Time Step:  44100, Simulation Time:    958.17 s
+ Time Step:  44200, Simulation Time:    960.25 s
+ Time Step:  44300, Simulation Time:    962.50 s
+ Time Step:  44400, Simulation Time:    964.74 s
+ Time Step:  44500, Simulation Time:    966.83 s
+ Time Step:  44600, Simulation Time:    968.75 s
+ Time Step:  44700, Simulation Time:    970.94 s
+ Time Step:  44800, Simulation Time:    973.18 s
+ Time Step:  44900, Simulation Time:    975.15 s
+ Time Step:  45000, Simulation Time:    977.37 s
+ Time Step:  45100, Simulation Time:    979.56 s
+ Time Step:  45200, Simulation Time:    981.81 s
+ Time Step:  45300, Simulation Time:    983.97 s
+ Time Step:  45400, Simulation Time:    986.11 s
+ Time Step:  45500, Simulation Time:    988.47 s
+ Time Step:  45600, Simulation Time:    990.79 s
+ Time Step:  45700, Simulation Time:    993.03 s
+ Time Step:  45800, Simulation Time:    995.05 s
+ Time Step:  45900, Simulation Time:    997.07 s
+ Time Step:  46000, Simulation Time:    999.33 s
+ Time Step:  46100, Simulation Time:   1001.65 s
+ Time Step:  46200, Simulation Time:   1003.76 s
+ Time Step:  46300, Simulation Time:   1005.95 s
+ Time Step:  46400, Simulation Time:   1008.17 s
+ Time Step:  46500, Simulation Time:   1010.37 s
+ Time Step:  46600, Simulation Time:   1012.42 s
+ Time Step:  46700, Simulation Time:   1014.62 s
+ Time Step:  46800, Simulation Time:   1016.81 s
+ Time Step:  46900, Simulation Time:   1018.92 s
+ Time Step:  47000, Simulation Time:   1021.10 s
+ Time Step:  47100, Simulation Time:   1023.22 s
+ Time Step:  47200, Simulation Time:   1025.43 s
+ Time Step:  47300, Simulation Time:   1027.56 s
+ Time Step:  47400, Simulation Time:   1029.80 s
+ Time Step:  47500, Simulation Time:   1031.76 s
+ Time Step:  47600, Simulation Time:   1033.76 s
+ Time Step:  47700, Simulation Time:   1035.93 s
+ Time Step:  47800, Simulation Time:   1038.19 s
+ Time Step:  47900, Simulation Time:   1040.43 s
+ Time Step:  48000, Simulation Time:   1042.74 s
+ Time Step:  48100, Simulation Time:   1044.79 s
+ Time Step:  48200, Simulation Time:   1047.08 s
+ Time Step:  48300, Simulation Time:   1049.22 s
+ Time Step:  48400, Simulation Time:   1051.34 s
+ Time Step:  48500, Simulation Time:   1053.46 s
+ Time Step:  48600, Simulation Time:   1055.70 s
+ Time Step:  48700, Simulation Time:   1057.80 s
+ Time Step:  48800, Simulation Time:   1060.05 s
+ Time Step:  48900, Simulation Time:   1062.11 s
+ Time Step:  49000, Simulation Time:   1064.39 s
+ Time Step:  49100, Simulation Time:   1066.50 s
+ Time Step:  49200, Simulation Time:   1068.77 s
+ Time Step:  49300, Simulation Time:   1071.00 s
+ Time Step:  49400, Simulation Time:   1073.09 s
+ Time Step:  49500, Simulation Time:   1075.20 s
+ Time Step:  49600, Simulation Time:   1077.22 s
+ Time Step:  49700, Simulation Time:   1079.25 s
+ Time Step:  49800, Simulation Time:   1081.28 s
+ Time Step:  49900, Simulation Time:   1083.53 s
+ Time Step:  50000, Simulation Time:   1085.58 s
+ Time Step:  50100, Simulation Time:   1087.66 s
+ Time Step:  50200, Simulation Time:   1089.95 s
+ Time Step:  50300, Simulation Time:   1092.01 s
+ Time Step:  50400, Simulation Time:   1094.03 s
+ Time Step:  50500, Simulation Time:   1096.20 s
+ Time Step:  50600, Simulation Time:   1098.37 s
+ Time Step:  50700, Simulation Time:   1100.53 s
+ Time Step:  50800, Simulation Time:   1102.62 s
+ Time Step:  50900, Simulation Time:   1104.77 s
+ Time Step:  51000, Simulation Time:   1106.84 s
+ Time Step:  51100, Simulation Time:   1109.05 s
+ Time Step:  51200, Simulation Time:   1111.23 s
+ Time Step:  51300, Simulation Time:   1113.29 s
+ Time Step:  51400, Simulation Time:   1115.35 s
+ Time Step:  51500, Simulation Time:   1117.47 s
+ Time Step:  51600, Simulation Time:   1119.65 s
+ Time Step:  51700, Simulation Time:   1121.82 s
+ Time Step:  51800, Simulation Time:   1123.92 s
+ Time Step:  51900, Simulation Time:   1126.11 s
+ Time Step:  52000, Simulation Time:   1128.32 s
+ Time Step:  52100, Simulation Time:   1130.48 s
+ Time Step:  52200, Simulation Time:   1132.69 s
+ Time Step:  52300, Simulation Time:   1134.83 s
+ Time Step:  52400, Simulation Time:   1136.99 s
+ Time Step:  52500, Simulation Time:   1139.02 s
+ Time Step:  52600, Simulation Time:   1141.29 s
+ Time Step:  52700, Simulation Time:   1143.54 s
+ Time Step:  52800, Simulation Time:   1145.83 s
+ Time Step:  52900, Simulation Time:   1147.97 s
+ Time Step:  53000, Simulation Time:   1150.05 s
+ Time Step:  53100, Simulation Time:   1152.23 s
+ Time Step:  53200, Simulation Time:   1154.16 s
+ Time Step:  53300, Simulation Time:   1156.41 s
+ Time Step:  53400, Simulation Time:   1158.41 s
+ Time Step:  53500, Simulation Time:   1160.64 s
+ Time Step:  53600, Simulation Time:   1162.82 s
+ Time Step:  53700, Simulation Time:   1164.91 s
+ Time Step:  53800, Simulation Time:   1166.92 s
+ Time Step:  53900, Simulation Time:   1169.06 s
+ Time Step:  54000, Simulation Time:   1171.23 s
+ Time Step:  54100, Simulation Time:   1173.40 s
+ Time Step:  54200, Simulation Time:   1175.61 s
+ Time Step:  54300, Simulation Time:   1177.54 s
+ Time Step:  54400, Simulation Time:   1179.80 s
+ Time Step:  54500, Simulation Time:   1182.00 s
+ Time Step:  54600, Simulation Time:   1184.06 s
+ Time Step:  54700, Simulation Time:   1186.30 s
+ Time Step:  54800, Simulation Time:   1188.30 s
+ Time Step:  54900, Simulation Time:   1190.36 s
+ Time Step:  55000, Simulation Time:   1192.55 s
+ Time Step:  55100, Simulation Time:   1194.80 s
+ Time Step:  55200, Simulation Time:   1196.96 s
+ Time Step:  55300, Simulation Time:   1199.00 s
+ Time Step:  55400, Simulation Time:   1201.19 s
+ Time Step:  55500, Simulation Time:   1203.29 s
+ Time Step:  55600, Simulation Time:   1205.28 s
+ Time Step:  55700, Simulation Time:   1207.39 s
+ Time Step:  55800, Simulation Time:   1209.37 s
+ Time Step:  55900, Simulation Time:   1211.56 s
+ Time Step:  56000, Simulation Time:   1213.74 s
+ Time Step:  56100, Simulation Time:   1215.77 s
+ Time Step:  56200, Simulation Time:   1217.82 s
+ Time Step:  56300, Simulation Time:   1220.00 s
+ Time Step:  56400, Simulation Time:   1222.12 s
+ Time Step:  56500, Simulation Time:   1224.41 s
+ Time Step:  56600, Simulation Time:   1226.43 s
+ Time Step:  56700, Simulation Time:   1228.78 s
+ Time Step:  56800, Simulation Time:   1230.88 s
+ Time Step:  56900, Simulation Time:   1232.90 s
+ Time Step:  57000, Simulation Time:   1234.99 s
+ Time Step:  57100, Simulation Time:   1237.16 s
+ Time Step:  57200, Simulation Time:   1239.38 s
+ Time Step:  57300, Simulation Time:   1241.56 s
+ Time Step:  57400, Simulation Time:   1243.68 s
+ Time Step:  57500, Simulation Time:   1245.80 s
+ Time Step:  57600, Simulation Time:   1247.97 s
+ Time Step:  57700, Simulation Time:   1250.09 s
+ Time Step:  57800, Simulation Time:   1252.16 s
+ Time Step:  57900, Simulation Time:   1254.26 s
+ Time Step:  58000, Simulation Time:   1256.44 s
+ Time Step:  58100, Simulation Time:   1258.58 s
+ Time Step:  58200, Simulation Time:   1260.85 s
+ Time Step:  58300, Simulation Time:   1262.88 s
+ Time Step:  58400, Simulation Time:   1264.97 s
+ Time Step:  58500, Simulation Time:   1267.03 s
+ Time Step:  58600, Simulation Time:   1269.36 s
+ Time Step:  58700, Simulation Time:   1271.42 s
+ Time Step:  58800, Simulation Time:   1273.56 s
+ Time Step:  58900, Simulation Time:   1275.66 s
+ Time Step:  59000, Simulation Time:   1277.93 s
+ Time Step:  59100, Simulation Time:   1279.98 s
+ Time Step:  59200, Simulation Time:   1282.01 s
+ Time Step:  59300, Simulation Time:   1284.02 s
+ Time Step:  59400, Simulation Time:   1286.04 s
+ Time Step:  59500, Simulation Time:   1288.17 s
+ Time Step:  59600, Simulation Time:   1290.26 s
+ Time Step:  59700, Simulation Time:   1292.41 s
+ Time Step:  59800, Simulation Time:   1294.43 s
+ Time Step:  59900, Simulation Time:   1296.49 s
+ Time Step:  60000, Simulation Time:   1298.54 s
+ Time Step:  60100, Simulation Time:   1300.72 s
+ Time Step:  60200, Simulation Time:   1302.94 s
+ Time Step:  60300, Simulation Time:   1305.06 s
+ Time Step:  60400, Simulation Time:   1307.07 s
+ Time Step:  60500, Simulation Time:   1309.33 s
+ Time Step:  60600, Simulation Time:   1311.41 s
+ Time Step:  60700, Simulation Time:   1313.56 s
+ Time Step:  60800, Simulation Time:   1315.70 s
+ Time Step:  60900, Simulation Time:   1318.00 s
+ Time Step:  61000, Simulation Time:   1320.29 s
+ Time Step:  61100, Simulation Time:   1322.55 s
+ Time Step:  61200, Simulation Time:   1324.64 s
+ Time Step:  61300, Simulation Time:   1326.81 s
+ Time Step:  61400, Simulation Time:   1328.94 s
+ Time Step:  61500, Simulation Time:   1331.10 s
+ Time Step:  61600, Simulation Time:   1333.17 s
+ Time Step:  61700, Simulation Time:   1335.28 s
+ Time Step:  61800, Simulation Time:   1337.46 s
+ Time Step:  61900, Simulation Time:   1339.55 s
+ Time Step:  62000, Simulation Time:   1341.65 s
+ Time Step:  62100, Simulation Time:   1343.87 s
+ Time Step:  62200, Simulation Time:   1346.14 s
+ Time Step:  62300, Simulation Time:   1348.23 s
+ Time Step:  62400, Simulation Time:   1350.42 s
+ Time Step:  62500, Simulation Time:   1352.47 s
+ Time Step:  62600, Simulation Time:   1354.66 s
+ Time Step:  62700, Simulation Time:   1356.66 s
+ Time Step:  62800, Simulation Time:   1358.84 s
+ Time Step:  62900, Simulation Time:   1360.90 s
+ Time Step:  63000, Simulation Time:   1363.01 s
+ Time Step:  63100, Simulation Time:   1365.10 s
+ Time Step:  63200, Simulation Time:   1367.07 s
+ Time Step:  63300, Simulation Time:   1369.11 s
+ Time Step:  63400, Simulation Time:   1371.16 s
+ Time Step:  63500, Simulation Time:   1373.35 s
+ Time Step:  63600, Simulation Time:   1375.55 s
+ Time Step:  63700, Simulation Time:   1377.68 s
+ Time Step:  63800, Simulation Time:   1379.86 s
+ Time Step:  63900, Simulation Time:   1382.03 s
+ Time Step:  64000, Simulation Time:   1384.26 s
+ Time Step:  64100, Simulation Time:   1386.56 s
+ Time Step:  64200, Simulation Time:   1388.74 s
+ Time Step:  64300, Simulation Time:   1390.94 s
+ Time Step:  64400, Simulation Time:   1393.18 s
+ Time Step:  64500, Simulation Time:   1395.29 s
+ Time Step:  64600, Simulation Time:   1397.48 s
+ Time Step:  64700, Simulation Time:   1399.67 s
+ Time Step:  64800, Simulation Time:   1401.77 s
+ Time Step:  64900, Simulation Time:   1403.82 s
+ Time Step:  65000, Simulation Time:   1405.88 s
+ Time Step:  65100, Simulation Time:   1407.90 s
+ Time Step:  65200, Simulation Time:   1409.80 s
+ Time Step:  65300, Simulation Time:   1412.03 s
+ Time Step:  65400, Simulation Time:   1414.26 s
+ Time Step:  65500, Simulation Time:   1416.37 s
+ Time Step:  65600, Simulation Time:   1418.53 s
+ Time Step:  65700, Simulation Time:   1420.64 s
+ Time Step:  65800, Simulation Time:   1422.74 s
+ Time Step:  65900, Simulation Time:   1424.93 s
+ Time Step:  66000, Simulation Time:   1426.94 s
+ Time Step:  66100, Simulation Time:   1429.05 s
+ Time Step:  66200, Simulation Time:   1431.16 s
+ Time Step:  66300, Simulation Time:   1433.34 s
+ Time Step:  66400, Simulation Time:   1435.38 s
+ Time Step:  66500, Simulation Time:   1437.31 s
+ Time Step:  66600, Simulation Time:   1439.38 s
+ Time Step:  66700, Simulation Time:   1441.52 s
+ Time Step:  66800, Simulation Time:   1443.83 s
+ Time Step:  66900, Simulation Time:   1446.05 s
+ Time Step:  67000, Simulation Time:   1448.24 s
+ Time Step:  67100, Simulation Time:   1450.40 s
+ Time Step:  67200, Simulation Time:   1452.60 s
+ Time Step:  67300, Simulation Time:   1454.74 s
+ Time Step:  67400, Simulation Time:   1457.03 s
+ Time Step:  67500, Simulation Time:   1459.22 s
+ Time Step:  67600, Simulation Time:   1461.24 s
+ Time Step:  67700, Simulation Time:   1463.23 s
+ Time Step:  67800, Simulation Time:   1465.43 s
+ Time Step:  67900, Simulation Time:   1467.59 s
+ Time Step:  68000, Simulation Time:   1469.77 s
+ Time Step:  68100, Simulation Time:   1471.90 s
+ Time Step:  68200, Simulation Time:   1474.02 s
+ Time Step:  68300, Simulation Time:   1476.31 s
+ Time Step:  68400, Simulation Time:   1478.28 s
+ Time Step:  68500, Simulation Time:   1480.52 s
+ Time Step:  68600, Simulation Time:   1482.69 s
+ Time Step:  68700, Simulation Time:   1484.92 s
+ Time Step:  68800, Simulation Time:   1487.17 s
+ Time Step:  68900, Simulation Time:   1489.24 s
+ Time Step:  69000, Simulation Time:   1491.32 s
+ Time Step:  69100, Simulation Time:   1493.42 s
+ Time Step:  69200, Simulation Time:   1495.49 s
+ Time Step:  69300, Simulation Time:   1497.65 s
+ Time Step:  69400, Simulation Time:   1499.94 s
+ Time Step:  69500, Simulation Time:   1502.12 s
+ Time Step:  69600, Simulation Time:   1504.25 s
+ Time Step:  69700, Simulation Time:   1506.36 s
+ Time Step:  69800, Simulation Time:   1508.40 s
+ Time Step:  69900, Simulation Time:   1510.56 s
+ Time Step:  70000, Simulation Time:   1512.66 s
+ Time Step:  70100, Simulation Time:   1514.81 s
+ Time Step:  70200, Simulation Time:   1516.77 s
+ Time Step:  70300, Simulation Time:   1518.92 s
+ Time Step:  70400, Simulation Time:   1520.87 s
+ Time Step:  70500, Simulation Time:   1522.93 s
+ Time Step:  70600, Simulation Time:   1525.10 s
+ Time Step:  70700, Simulation Time:   1527.21 s
+ Time Step:  70800, Simulation Time:   1529.33 s
+ Time Step:  70900, Simulation Time:   1531.52 s
+ Time Step:  71000, Simulation Time:   1533.75 s
+ Time Step:  71100, Simulation Time:   1535.97 s
+ Time Step:  71200, Simulation Time:   1538.19 s
+ Time Step:  71300, Simulation Time:   1540.51 s
+ Time Step:  71400, Simulation Time:   1542.53 s
+ Time Step:  71500, Simulation Time:   1544.55 s
+ Time Step:  71600, Simulation Time:   1546.60 s
+ Time Step:  71700, Simulation Time:   1548.69 s
+ Time Step:  71800, Simulation Time:   1550.83 s
+ Time Step:  71900, Simulation Time:   1553.06 s
+ Time Step:  72000, Simulation Time:   1555.20 s
+ Time Step:  72100, Simulation Time:   1557.25 s
+ Time Step:  72200, Simulation Time:   1559.24 s
+ Time Step:  72300, Simulation Time:   1561.54 s
+ Time Step:  72400, Simulation Time:   1563.63 s
+ Time Step:  72500, Simulation Time:   1565.80 s
+ Time Step:  72600, Simulation Time:   1567.93 s
+ Time Step:  72700, Simulation Time:   1570.18 s
+ Time Step:  72800, Simulation Time:   1572.40 s
+ Time Step:  72900, Simulation Time:   1574.67 s
+ Time Step:  73000, Simulation Time:   1576.90 s
+ Time Step:  73100, Simulation Time:   1578.98 s
+ Time Step:  73200, Simulation Time:   1581.10 s
+ Time Step:  73300, Simulation Time:   1583.09 s
+ Time Step:  73400, Simulation Time:   1585.24 s
+ Time Step:  73500, Simulation Time:   1587.34 s
+ Time Step:  73600, Simulation Time:   1589.49 s
+ Time Step:  73700, Simulation Time:   1591.61 s
+ Time Step:  73800, Simulation Time:   1593.65 s
+ Time Step:  73900, Simulation Time:   1595.71 s
+ Time Step:  74000, Simulation Time:   1597.78 s
+ Time Step:  74100, Simulation Time:   1599.74 s
+ Time Step:  74200, Simulation Time:   1601.70 s
+ Time Step:  74300, Simulation Time:   1603.78 s
+ Time Step:  74400, Simulation Time:   1605.82 s
+ Time Step:  74500, Simulation Time:   1608.01 s
+ Time Step:  74600, Simulation Time:   1610.08 s
+ Time Step:  74700, Simulation Time:   1612.16 s
+ Time Step:  74800, Simulation Time:   1614.37 s
+ Time Step:  74900, Simulation Time:   1616.52 s
+ Time Step:  75000, Simulation Time:   1618.68 s
+ Time Step:  75100, Simulation Time:   1620.87 s
+ Time Step:  75200, Simulation Time:   1622.93 s
+ Time Step:  75300, Simulation Time:   1624.91 s
+ Time Step:  75400, Simulation Time:   1627.01 s
+ Time Step:  75500, Simulation Time:   1629.22 s
+ Time Step:  75600, Simulation Time:   1631.29 s
+ Time Step:  75700, Simulation Time:   1633.41 s
+ Time Step:  75800, Simulation Time:   1635.49 s
+ Time Step:  75900, Simulation Time:   1637.77 s
+ Time Step:  76000, Simulation Time:   1640.04 s
+ Time Step:  76100, Simulation Time:   1642.16 s
+ Time Step:  76200, Simulation Time:   1644.27 s
+ Time Step:  76300, Simulation Time:   1646.18 s
+ Time Step:  76400, Simulation Time:   1648.16 s
+ Time Step:  76500, Simulation Time:   1650.45 s
+ Time Step:  76600, Simulation Time:   1652.62 s
+ Time Step:  76700, Simulation Time:   1654.80 s
+ Time Step:  76800, Simulation Time:   1656.89 s
+ Time Step:  76900, Simulation Time:   1659.03 s
+ Time Step:  77000, Simulation Time:   1661.08 s
+ Time Step:  77100, Simulation Time:   1663.24 s
+ Time Step:  77200, Simulation Time:   1665.30 s
+ Time Step:  77300, Simulation Time:   1667.41 s
+ Time Step:  77400, Simulation Time:   1669.56 s
+ Time Step:  77500, Simulation Time:   1671.64 s
+ Time Step:  77600, Simulation Time:   1673.68 s
+ Time Step:  77700, Simulation Time:   1675.80 s
+ Time Step:  77800, Simulation Time:   1677.90 s
+ Time Step:  77900, Simulation Time:   1680.00 s
+ Time Step:  78000, Simulation Time:   1682.21 s
+ Time Step:  78100, Simulation Time:   1684.35 s
+ Time Step:  78200, Simulation Time:   1686.33 s
+ Time Step:  78300, Simulation Time:   1688.38 s
+ Time Step:  78400, Simulation Time:   1690.63 s
+ Time Step:  78500, Simulation Time:   1692.86 s
+ Time Step:  78600, Simulation Time:   1694.99 s
+ Time Step:  78700, Simulation Time:   1697.08 s
+ Time Step:  78800, Simulation Time:   1699.23 s
+ Time Step:  78900, Simulation Time:   1701.30 s
+ Time Step:  79000, Simulation Time:   1703.46 s
+ Time Step:  79100, Simulation Time:   1705.74 s
+ Time Step:  79200, Simulation Time:   1707.95 s
+ Time Step:  79300, Simulation Time:   1709.97 s
+ Time Step:  79400, Simulation Time:   1712.12 s
+ Time Step:  79500, Simulation Time:   1714.26 s
+ Time Step:  79600, Simulation Time:   1716.38 s
+ Time Step:  79700, Simulation Time:   1718.68 s
+ Time Step:  79800, Simulation Time:   1720.70 s
+ Time Step:  79900, Simulation Time:   1722.80 s
+ Time Step:  80000, Simulation Time:   1724.74 s
+ Time Step:  80100, Simulation Time:   1726.72 s
+ Time Step:  80200, Simulation Time:   1728.74 s
+ Time Step:  80300, Simulation Time:   1730.67 s
+ Time Step:  80400, Simulation Time:   1732.80 s
+ Time Step:  80500, Simulation Time:   1734.85 s
+ Time Step:  80600, Simulation Time:   1736.98 s
+ Time Step:  80700, Simulation Time:   1739.11 s
+ Time Step:  80800, Simulation Time:   1741.21 s
+ Time Step:  80900, Simulation Time:   1743.25 s
+ Time Step:  81000, Simulation Time:   1745.37 s
+ Time Step:  81100, Simulation Time:   1747.53 s
+ Time Step:  81200, Simulation Time:   1749.67 s
+ Time Step:  81300, Simulation Time:   1751.80 s
+ Time Step:  81400, Simulation Time:   1754.02 s
+ Time Step:  81500, Simulation Time:   1756.26 s
+ Time Step:  81600, Simulation Time:   1758.45 s
+ Time Step:  81700, Simulation Time:   1760.47 s
+ Time Step:  81800, Simulation Time:   1762.59 s
+ Time Step:  81900, Simulation Time:   1764.71 s
+ Time Step:  82000, Simulation Time:   1766.83 s
+ Time Step:  82100, Simulation Time:   1768.92 s
+ Time Step:  82200, Simulation Time:   1771.14 s
+ Time Step:  82300, Simulation Time:   1773.23 s
+ Time Step:  82400, Simulation Time:   1775.38 s
+ Time Step:  82500, Simulation Time:   1777.57 s
+ Time Step:  82600, Simulation Time:   1779.75 s
+ Time Step:  82700, Simulation Time:   1781.81 s
+ Time Step:  82800, Simulation Time:   1783.94 s
+ Time Step:  82900, Simulation Time:   1786.10 s
+ Time Step:  83000, Simulation Time:   1788.25 s
+ Time Step:  83100, Simulation Time:   1790.39 s
+ Time Step:  83200, Simulation Time:   1792.54 s
+ Time Step:  83300, Simulation Time:   1794.54 s
+ Time Step:  83400, Simulation Time:   1796.58 s
+ Time Step:  83500, Simulation Time:   1798.74 s
+ Time Step:  83555, Simulation Time:   1800.00 s
+
+STOP: FDS completed successfully (CHID: StecklerExample)
+
+########################################
+# Run Directory Contents
+total 112M
+drwxrwxr-x 2 larnold cobra 4.0K Oct 26 22:46 .
+drwxrwxr-x 3 larnold cobra  233 Oct 26 21:59 ..
+-rw-rw-r-- 1 larnold cobra 3.3K Oct 26 21:09 example_01.fds
+-rw-rw-r-- 1 larnold cobra  11M Oct 26 22:46 StecklerExample_1_1.bf
+-rw-rw-r-- 1 larnold cobra  74K Oct 26 22:46 StecklerExample_1_1.bf.bnd
+-rw-rw-r-- 1 larnold cobra  23M Oct 26 22:46 StecklerExample_1_1.s3d
+-rw-rw-r-- 1 larnold cobra  97K Oct 26 22:46 StecklerExample_1_1.s3d.sz
+-rw-rw-r-- 1 larnold cobra 4.7M Oct 26 22:46 StecklerExample_1_1.sf
+-rw-rw-r-- 1 larnold cobra  74K Oct 26 22:46 StecklerExample_1_1.sf.bnd
+-rw-rw-r-- 1 larnold cobra 1.7M Oct 26 22:46 StecklerExample_1_2.s3d
+-rw-rw-r-- 1 larnold cobra  97K Oct 26 22:46 StecklerExample_1_2.s3d.sz
+-rw-rw-r-- 1 larnold cobra 6.6M Oct 26 22:46 StecklerExample_1_2.sf
+-rw-rw-r-- 1 larnold cobra  74K Oct 26 22:46 StecklerExample_1_2.sf.bnd
+-rw-rw-r-- 1 larnold cobra  24M Oct 26 22:46 StecklerExample_1_3.s3d
+-rw-rw-r-- 1 larnold cobra  97K Oct 26 22:46 StecklerExample_1_3.s3d.sz
+-rw-rw-r-- 1 larnold cobra 4.7M Oct 26 22:46 StecklerExample_1_3.sf
+-rw-rw-r-- 1 larnold cobra  74K Oct 26 22:46 StecklerExample_1_3.sf.bnd
+-rw-rw-r-- 1 larnold cobra 6.6M Oct 26 22:46 StecklerExample_1_4.sf
+-rw-rw-r-- 1 larnold cobra  74K Oct 26 22:46 StecklerExample_1_4.sf.bnd
+-rw-rw-r-- 1 larnold cobra 8.3M Oct 26 22:46 StecklerExample_1_5.sf
+-rw-rw-r-- 1 larnold cobra  74K Oct 26 22:46 StecklerExample_1_5.sf.bnd
+-rw-rw-r-- 1 larnold cobra    2 Oct 26 21:09 StecklerExample.binfo
+-rw-rw-r-- 1 larnold cobra  279 Oct 26 22:46 StecklerExample_cpu.csv
+-rw-rw-r-- 1 larnold cobra 113K Oct 26 22:46 StecklerExample_devc.csv
+-rw-rw-r-- 1 larnold cobra   12 Oct 26 21:09 StecklerExample.end
+-rw-rw-r-- 1 larnold cobra   25 Oct 26 21:09 StecklerExample_git.txt
+-rw-rw-r-- 1 larnold cobra 366K Oct 26 22:46 StecklerExample_hrr.csv
+-rw-rw-r-- 1 larnold cobra 547K Oct 26 22:46 StecklerExample.out
+-rw-rw-r-- 1 larnold cobra    2 Oct 26 21:09 StecklerExample.sinfo
+-rw-rw-r-- 1 larnold cobra  12K Oct 26 21:09 StecklerExample.smv
+-rw-rw-r-- 1 larnold cobra  63K Oct 26 22:46 StecklerExample_steps.csv
+
+########################################
+# Back To Initial Directory
+/beegfs/larnold/data/lukas/LectureFireSimulation/data/fdsreader/example_01
+
+########################################
+# Tail -- Run Case -- fdsreader_example_01
+current time: Wed Oct 26 22:46:18 CEST 2022
