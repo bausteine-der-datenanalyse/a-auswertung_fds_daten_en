@@ -1,0 +1,52 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Anwendungsbaustein - Auswertung von fds-Daten",
+    "section": "",
+    "text": "Preamble",
+    "crumbs": [
+      "Preamble"
+    ]
+  },
+  {
+    "objectID": "index.html#requirements",
+    "href": "index.html#requirements",
+    "title": "Anwendungsbaustein - Auswertung von fds-Daten",
+    "section": "Requirements",
+    "text": "Requirements\n\nBasic knowledge of python\nImporting packages\nNumPy basics\nPandas basics\nPlotting with matplotlib\nBasic knowledge in simulating fires",
+    "crumbs": [
+      "Preamble"
+    ]
+  },
+  {
+    "objectID": "index.html#used-packages-and-data-sets",
+    "href": "index.html#used-packages-and-data-sets",
+    "title": "Anwendungsbaustein - Auswertung von fds-Daten",
+    "section": "Used packages and data sets",
+    "text": "Used packages and data sets\n\nNumPy\npandas\nmatplotlib\nfdsreader",
+    "crumbs": [
+      "Preamble"
+    ]
+  },
+  {
+    "objectID": "index.html#time-required",
+    "href": "index.html#time-required",
+    "title": "Anwendungsbaustein - Auswertung von fds-Daten",
+    "section": "Time required",
+    "text": "Time required\nGeschätzte Bearbeitungszeit: 4h",
+    "crumbs": [
+      "Preamble"
+    ]
+  },
+  {
+    "objectID": "index.html#learning-objectives",
+    "href": "index.html#learning-objectives",
+    "title": "Anwendungsbaustein - Auswertung von fds-Daten",
+    "section": "Learning objectives",
+    "text": "Learning objectives\n\nReading in data using the fdsreader\nAnalyzing the data to perform an ASET analysis",
+    "crumbs": [
+      "Preamble"
+    ]
+  }
+]
