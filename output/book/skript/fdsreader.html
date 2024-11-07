@@ -227,26 +227,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>The fdsreader module can be installed via pip (see also the GitHub repository):</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode default code-with-copy"><code class="sourceCode default"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pip install fdsreader</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>To learn the basic usage of the fdsreader module we will look at a simple FDS scenario. Lets first import the module:</p>
-<div id="36ca500d" class="cell" data-execution_count="1">
+<div id="78420e38" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> fdsreader</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Since we will also plot the data we will import <code>matplotlib</code>too.</p>
-<div id="69c766aa" class="cell" data-execution_count="2">
+<div id="6c6b19b2" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="choosing-the-correct-folder" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="choosing-the-correct-folder"><span class="header-section-number">2.2</span> Choosing the correct folder</h2>
 <p>Next, the reader needs to be pointed to the directory, which contains the simulation data, especailly the smokeview file.</p>
-<div id="ff38b6dc" class="cell" data-execution_count="3">
+<div id="64fe61bd" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define the path to the data</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>path_to_data <span class="op">=</span> <span class="st">'../skript/01-data/first_example'</span></span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>sim <span class="op">=</span> fdsreader.Simulation(path_to_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/opt/hostedtoolcache/Python/3.12.7/x64/lib/python3.12/site-packages/numpy/lib/_npyio_impl.py:1036: UserWarning: no explicit representation of timezones available for np.datetime64
+  arr = _load_from_filelike(</code></pre>
+</div>
 </div>
 <p>The <code>Simulation</code> object <code>sim</code> contains now all the information and data about the simulaiton output:</p>
-<div id="dbc86328" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>sim</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="653caa2d" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>sim</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="4">
 <pre><code>Simulation(chid=StecklerExample,
            meshes=1,
@@ -278,10 +282,10 @@ Devices in FDS
 </div>
 </div>
 <p>The simplest data set is the output of the DEVC directives. The available data and meta information can be directly printed:</p>
-<div id="259040f2" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># short reference for convinience, i.e. `devc` contains all devices</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>devc <span class="op">=</span> sim.devices</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(devc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="87704bad" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># short reference for convinience, i.e. `devc` contains all devices</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>devc <span class="op">=</span> sim.devices</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(devc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[Device(id='Time', xyz=(0.0, 0.0, 0.0), quantity=Quantity('TIME')),
 Device(id='Temp_Door_Low', xyz=(1.45, 0.05, 0.1), quantity=Quantity('TEMPERATURE')),
@@ -290,9 +294,9 @@ Device(id='Temp_Door_High', xyz=(1.45, 0.05, 1.65), quantity=Quantity('TEMPERATU
 </div>
 </div>
 <p>The Device class contains all relevant information, see <a href="https://firedynamics.github.io/fdsreader/devc.html">device documentation</a>.</p>
-<div id="e3f3d21b" class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> devc:</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"ID: </span><span class="sc">{</span>i<span class="sc">.</span><span class="bu">id</span><span class="sc">}</span><span class="ss">,</span><span class="ch">\t</span><span class="ss"> quantity: </span><span class="sc">{</span>i<span class="sc">.</span>quantity_name<span class="sc">}</span><span class="ss">, </span><span class="ch">\t</span><span class="ss"> position: </span><span class="sc">{</span>i<span class="sc">.</span>position<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="adda9958" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> devc:</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"ID: </span><span class="sc">{</span>i<span class="sc">.</span><span class="bu">id</span><span class="sc">}</span><span class="ss">,</span><span class="ch">\t</span><span class="ss"> quantity: </span><span class="sc">{</span>i<span class="sc">.</span>quantity_name<span class="sc">}</span><span class="ss">, </span><span class="ch">\t</span><span class="ss"> position: </span><span class="sc">{</span>i<span class="sc">.</span>position<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>ID: Time,    quantity: TIME,     position: (0.0, 0.0, 0.0)
 ID: Temp_Door_Low,   quantity: TEMPERATURE,      position: (1.45, 0.05, 0.1)
@@ -301,41 +305,41 @@ ID: Temp_Door_High,  quantity: TEMPERATURE,      position: (1.45, 0.05, 1.65)</c
 </div>
 </div>
 <p>Individual devices, including the time column, are accessable as dictironary entries using their ID as key. The data of each individual device (Device.data) is stored as a numpy array:</p>
-<div id="1d66f95c" class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(devc[<span class="st">'Temp_Door_Mid'</span>].data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="82f29027" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">type</span>(devc[<span class="st">'Temp_Door_Mid'</span>].data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="7">
 <pre><code>numpy.ndarray</code></pre>
 </div>
 </div>
 <p>The length matches the expected value, i.e.&nbsp;1801, as the simulation time was and the divices were writen out every second, including the initial time step, here at <code>t = 0s</code>.</p>
-<div id="bb4526d3" class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(devc[<span class="st">'Time'</span>].data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="be918b1f" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="bu">len</span>(devc[<span class="st">'Time'</span>].data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="8">
 <pre><code>1801</code></pre>
 </div>
 </div>
 <p>A raw look at the data (<code>Device.data</code>):</p>
-<div id="a8a8e7bf" class="cell" data-execution_count="9">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>devc[<span class="st">'Temp_Door_Mid'</span>].data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="9f0e7120" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>devc[<span class="st">'Temp_Door_Mid'</span>].data</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
 <pre><code>array([ 20.      ,  20.002083,  20.034418, ..., 105.32822 , 114.82179 ,
        115.01705 ], dtype=float32)</code></pre>
 </div>
 </div>
 <p>The device data can be also visualised with matplotlib:</p>
-<div id="4f7be692" class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create the plot</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>plt.plot(devc[<span class="st">'Time'</span>].data, devc[<span class="st">'Temp_Door_High'</span>].data)</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># label the axes</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"time / s"</span>)</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>devc_id <span class="op">=</span> devc[<span class="st">'Temp_Door_High'</span>].<span class="bu">id</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>devc_q <span class="op">=</span> devc[<span class="st">'Temp_Door_High'</span>].quantity_name</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>devc_u <span class="op">=</span> devc[<span class="st">'Temp_Door_High'</span>].unit</span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="ss">f"</span><span class="sc">{</span>devc_q<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>devc_id<span class="sc">}</span><span class="ss">) / </span><span class="sc">{</span>devc_u<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="co"># add a grid</span></span>
-<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>plt.grid()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="f7a59e62" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># create the plot</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>plt.plot(devc[<span class="st">'Time'</span>].data, devc[<span class="st">'Temp_Door_High'</span>].data)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co"># label the axes</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"time / s"</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>devc_id <span class="op">=</span> devc[<span class="st">'Temp_Door_High'</span>].<span class="bu">id</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>devc_q <span class="op">=</span> devc[<span class="st">'Temp_Door_High'</span>].quantity_name</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>devc_u <span class="op">=</span> devc[<span class="st">'Temp_Door_High'</span>].unit</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="ss">f"</span><span class="sc">{</span>devc_q<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>devc_id<span class="sc">}</span><span class="ss">) / </span><span class="sc">{</span>devc_u<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="co"># add a grid</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>plt.grid()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -345,24 +349,24 @@ ID: Temp_Door_High,  quantity: TEMPERATURE,      position: (1.45, 0.05, 1.65)</c
 </div>
 </div>
 <p>In the same manner a set of devices can be plotted at once. Like all devices with names starting with Temp_:</p>
-<div id="ae8dfc53" class="cell" data-execution_count="11">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># loop over all devices</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> devc:</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># consider only devices with an ID that starts with 'Temp_'</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> i.<span class="bu">id</span>.startswith(<span class="st">'Temp_'</span>): </span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    plt.plot(devc[<span class="st">"Time"</span>].data, i.data, label<span class="op">=</span>i.<span class="bu">id</span>)</span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"time / s"</span>)</span>
-<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'temperature / $^\circ$C'</span>)</span>
-<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>plt.grid()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="5b77ff8f" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># loop over all devices</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> devc:</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># consider only devices with an ID that starts with 'Temp_'</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> i.<span class="bu">id</span>.startswith(<span class="st">'Temp_'</span>): </span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>    plt.plot(devc[<span class="st">"Time"</span>].data, i.data, label<span class="op">=</span>i.<span class="bu">id</span>)</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"time / s"</span>)</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'temperature / $^\circ$C'</span>)</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>plt.grid()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>&lt;&gt;:12: SyntaxWarning: invalid escape sequence '\c'
 &lt;&gt;:12: SyntaxWarning: invalid escape sequence '\c'
-/var/folders/p_/ks3trxjx0jd839_g4g0vm4nc0000gn/T/ipykernel_85218/1295739546.py:12: SyntaxWarning: invalid escape sequence '\c'
+/tmp/ipykernel_2827/1295739546.py:12: SyntaxWarning: invalid escape sequence '\c'
   plt.ylabel('temperature / $^\circ$C')</code></pre>
 </div>
 <div class="cell-output cell-output-display">
@@ -390,21 +394,21 @@ Heat Release Rate (HRR)
 </div>
 </div>
 <p>In the same fashion as the <code>DEVC</code> data, the data written to the <code>HRR</code> file can be directly accessed. It is not stored in the <code>devices</code> but in the <code>hrr</code> element of the <code>Simulation</code> object.</p>
-<div id="1f10a4e0" class="cell" data-execution_count="12">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>plt.plot(sim.hrr[<span class="st">'Time'</span>], sim.hrr[<span class="st">'HRR'</span>], label<span class="op">=</span><span class="st">'heat release from fire'</span>)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>plt.plot(sim.hrr[<span class="st">'Time'</span>], sim.hrr[<span class="st">'Q_RADI'</span>], label<span class="op">=</span><span class="st">'radiative'</span>)</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>plt.plot(sim.hrr[<span class="st">'Time'</span>], sim.hrr[<span class="st">'Q_COND'</span>], label<span class="op">=</span><span class="st">'conductive'</span>)</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>plt.plot(sim.hrr[<span class="st">'Time'</span>], sim.hrr[<span class="st">'Q_CONV'</span>], label<span class="op">=</span><span class="st">'convective'</span>)</span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>plt.plot(sim.hrr[<span class="st">'Time'</span>], </span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>         sim.hrr[<span class="st">'HRR'</span>] <span class="op">+</span> sim.hrr[<span class="st">'Q_RADI'</span>] <span class="op">+</span> sim.hrr[<span class="st">'Q_COND'</span>] <span class="op">+</span> sim.hrr[<span class="st">'Q_CONV'</span>], </span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>         color<span class="op">=</span><span class="st">'grey'</span>, label<span class="op">=</span><span class="st">'sum'</span>, zorder<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'time / s'</span>)</span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'heat flow rate / kW'</span>)</span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>plt.grid()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="5ffba9e9" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>plt.plot(sim.hrr[<span class="st">'Time'</span>], sim.hrr[<span class="st">'HRR'</span>], label<span class="op">=</span><span class="st">'heat release from fire'</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>plt.plot(sim.hrr[<span class="st">'Time'</span>], sim.hrr[<span class="st">'Q_RADI'</span>], label<span class="op">=</span><span class="st">'radiative'</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>plt.plot(sim.hrr[<span class="st">'Time'</span>], sim.hrr[<span class="st">'Q_COND'</span>], label<span class="op">=</span><span class="st">'conductive'</span>)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>plt.plot(sim.hrr[<span class="st">'Time'</span>], sim.hrr[<span class="st">'Q_CONV'</span>], label<span class="op">=</span><span class="st">'convective'</span>)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>plt.plot(sim.hrr[<span class="st">'Time'</span>], </span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>         sim.hrr[<span class="st">'HRR'</span>] <span class="op">+</span> sim.hrr[<span class="st">'Q_RADI'</span>] <span class="op">+</span> sim.hrr[<span class="st">'Q_COND'</span>] <span class="op">+</span> sim.hrr[<span class="st">'Q_CONV'</span>], </span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>         color<span class="op">=</span><span class="st">'grey'</span>, label<span class="op">=</span><span class="st">'sum'</span>, zorder<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'time / s'</span>)</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'heat flow rate / kW'</span>)</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>plt.grid()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -432,16 +436,16 @@ Slice data
 <p>Data generated by <code>SLCF</code> directives span over two or three spatial dimensions plus the time dimension. Besides that, they can be distributed across multiple meshes.</p>
 <p>The data of a slice is stored for each mesh individually. In this simple example, there is only a single mesh, yet for formal consistency it still needs to be referred.</p>
 <p>The data structure is as follows:</p>
-<div id="76f049bd" class="cell" data-execution_count="13">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>sim.slices[sliceid][meshid].data[timestep, direction1, direction2]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="33f1911c" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>sim.slices[sliceid][meshid].data[timestep, direction1, direction2]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>where <code>sliceid</code> is just the index of the slice, <code>meshid</code> is the index of the mesh, here in this example 0, and the reference to the data is given by the time step id and then the two spatial indices (for two dimensional slices).</p>
 <p>In general there are multiple slice objects available:</p>
-<div id="de11bfdc" class="cell" data-execution_count="14">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># print available slice data</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="bu">slice</span> <span class="kw">in</span> sim.slices:</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Slice Type [2D/3D]: </span><span class="sc">{</span><span class="bu">slice</span><span class="sc">.</span><span class="bu">type</span><span class="sc">}</span><span class="ch">\n</span><span class="ss">  Quantity: </span><span class="sc">{</span><span class="bu">slice</span><span class="sc">.</span>quantity<span class="sc">.</span>name<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>, </span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f" Physical Extent: </span><span class="sc">{</span><span class="bu">slice</span><span class="sc">.</span>extent<span class="sc">}</span><span class="ch">\n</span><span class="ss">  Orientation [1/2/3]: </span><span class="sc">{</span><span class="bu">slice</span><span class="sc">.</span>orientation<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="951bfa42" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># print available slice data</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> <span class="bu">slice</span> <span class="kw">in</span> sim.slices:</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Slice Type [2D/3D]: </span><span class="sc">{</span><span class="bu">slice</span><span class="sc">.</span><span class="bu">type</span><span class="sc">}</span><span class="ch">\n</span><span class="ss">  Quantity: </span><span class="sc">{</span><span class="bu">slice</span><span class="sc">.</span>quantity<span class="sc">.</span>name<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>, </span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>          <span class="ss">f" Physical Extent: </span><span class="sc">{</span><span class="bu">slice</span><span class="sc">.</span>extent<span class="sc">}</span><span class="ch">\n</span><span class="ss">  Orientation [1/2/3]: </span><span class="sc">{</span><span class="bu">slice</span><span class="sc">.</span>orientation<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Slice Type [2D/3D]: 2D
   Quantity: TEMPERATURE
@@ -471,43 +475,43 @@ Slice Type [2D/3D]: 2D
 </div>
 </div>
 <p>There are multiple ways to find the right slice in the set of all slices. One way is to filter for a quantity using the <code>filter_by_quantity</code> function or choose a slice by its ID.</p>
-<div id="e01e4997" class="cell" data-execution_count="15">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the W-VELOCITY slice(s)</span></span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>w_slice <span class="op">=</span> sim.slices.filter_by_quantity(<span class="st">"W-VELOCITY"</span>)</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(w_slice)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="c893b984" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># get the W-VELOCITY slice(s)</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>w_slice <span class="op">=</span> sim.slices.filter_by_quantity(<span class="st">"W-VELOCITY"</span>)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(w_slice)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>SliceCollection([Slice([2D] quantity=Quantity('W-VELOCITY'), cell_centered=False, extent=Extent([0.00, 0.00] x [-1.40, 1.40] x [0.00, 2.20]), extent_dirs=('y', 'z'), orientation=1),
 Slice([2D] quantity=Quantity('W-VELOCITY'), cell_centered=False, extent=Extent([-1.40, 2.60] x [-1.40, 1.40] x [1.80, 1.80]), extent_dirs=('x', 'y'), orientation=3)])</code></pre>
 </div>
 </div>
 <p>Another way is to select a slice based on its distance to a given point.</p>
-<div id="4fbcc334" class="cell" data-execution_count="16">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># select slice, by its distance to a given point</span></span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>slc <span class="op">=</span> w_slice.get_nearest(x<span class="op">=</span><span class="dv">1</span>, z<span class="op">=</span><span class="dv">2</span>)</span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(slc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="d2efb40d" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># select slice, by its distance to a given point</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>slc <span class="op">=</span> w_slice.get_nearest(x<span class="op">=</span><span class="dv">1</span>, z<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(slc)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Slice([2D] quantity=Quantity('W-VELOCITY'), cell_centered=False, extent=Extent([-1.40, 2.60] x [-1.40, 1.40] x [1.80, 1.80]), extent_dirs=('x', 'y'), orientation=3)</code></pre>
 </div>
 </div>
 <p>To access the actual slice data, the actual mesh and a point in time needs to be specified. In this example, there is only one mesh, thus the index is 0. The function <code>get_nearest_timestemp</code> helps to find the right time index.</p>
-<div id="f8852ec2" class="cell" data-execution_count="17">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="co"># choose and output the time step, next to t=75 s</span></span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>it <span class="op">=</span> slc.get_nearest_timestep(<span class="dv">25</span>)</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Time step: </span><span class="sc">{</span>it<span class="sc">}</span><span class="ss">"</span>)</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Simulation time: </span><span class="sc">{</span>slc<span class="sc">.</span>times[it]<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="18c0a830" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># choose and output the time step, next to t=75 s</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>it <span class="op">=</span> slc.get_nearest_timestep(<span class="dv">25</span>)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Time step: </span><span class="sc">{</span>it<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Simulation time: </span><span class="sc">{</span>slc<span class="sc">.</span>times[it]<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Time step: 25
-Simulation time: 25.02111</code></pre>
+Simulation time: 25.021108627319336</code></pre>
 </div>
 </div>
 <p>The following example illustrates the visualisation of the data and steps needed to adjust the representation. The needed adjustments are due to the data orientation expected by the <code>imshow</code> function.</p>
-<div id="307b9e7f" class="cell" data-execution_count="18">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># choose the temperature slice in y-direction</span></span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>slc <span class="op">=</span> sim.slices.filter_by_quantity(<span class="st">'TEMPERATURE'</span>).get_nearest(x<span class="op">=</span><span class="dv">3</span>, y<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(slc)</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># only one mesh</span></span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>slc_data <span class="op">=</span> slc[<span class="dv">0</span>].data</span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(slc_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="aad33c22" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># choose the temperature slice in y-direction</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>slc <span class="op">=</span> sim.slices.filter_by_quantity(<span class="st">'TEMPERATURE'</span>).get_nearest(x<span class="op">=</span><span class="dv">3</span>, y<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(slc)</span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="co"># only one mesh</span></span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>slc_data <span class="op">=</span> slc[<span class="dv">0</span>].data</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(slc_data)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Slice([2D] quantity=Quantity('TEMPERATURE'), cell_centered=False, extent=Extent([-1.40, 2.60] x [0.00, 0.00] x [0.00, 2.20]), extent_dirs=('x', 'z'), orientation=2)
 [[[ 20.        20.        20.       ...  20.        20.        20.      ]
@@ -561,10 +565,10 @@ Simulation time: 25.02111</code></pre>
   [ 20.180956  20.111738  20.035168 ...  48.16472   36.145966  31.134487]]]</code></pre>
 </div>
 </div>
-<div id="5e5f6b06" class="cell" data-execution_count="19">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initial visualasation of the data at time t=50 s</span></span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>it <span class="op">=</span> slc.get_nearest_timestep(<span class="dv">50</span>)</span>
-<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>plt.imshow(slc_data[it])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="840bc2d2" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initial visualasation of the data at time t=50 s</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>it <span class="op">=</span> slc.get_nearest_timestep(<span class="dv">50</span>)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>plt.imshow(slc_data[it])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -573,9 +577,9 @@ Simulation time: 25.02111</code></pre>
 </div>
 </div>
 </div>
-<div id="f1cafaf0" class="cell" data-execution_count="20">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Access the transpose data using ndarray.T and set the origin of the output</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>plt.imshow(slc_data[it].T, origin<span class="op">=</span><span class="st">'lower'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="0c30cdd1" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Access the transpose data using ndarray.T and set the origin of the output</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>plt.imshow(slc_data[it].T, origin<span class="op">=</span><span class="st">'lower'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
@@ -584,17 +588,17 @@ Simulation time: 25.02111</code></pre>
 </div>
 </div>
 </div>
-<div id="b3443285" class="cell" data-execution_count="21">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initial visualasation of the data at time t=50 s</span></span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Finally, also the extend is specified to move from index to physical space</span></span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Additionally, the maximal value is set using the vmax argument</span></span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>plt.imshow(slc_data[it].T, </span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>           origin<span class="op">=</span><span class="st">'lower'</span>,</span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a>           vmax<span class="op">=</span><span class="dv">200</span>,</span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>           extent<span class="op">=</span>slc.extent.as_list())</span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>plt.colorbar(label<span class="op">=</span><span class="st">'temperature / C'</span>, orientation<span class="op">=</span><span class="st">'horizontal'</span>)</span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'x coordinate / m'</span>)</span>
-<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'z coordinate / m'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="f34e5ea8" class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initial visualasation of the data at time t=50 s</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Finally, also the extend is specified to move from index to physical space</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Additionally, the maximal value is set using the vmax argument</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>plt.imshow(slc_data[it].T, </span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>           origin<span class="op">=</span><span class="st">'lower'</span>,</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>           vmax<span class="op">=</span><span class="dv">200</span>,</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>           extent<span class="op">=</span>slc.extent.as_list())</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>plt.colorbar(label<span class="op">=</span><span class="st">'temperature / C'</span>, orientation<span class="op">=</span><span class="st">'horizontal'</span>)</span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'x coordinate / m'</span>)</span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'z coordinate / m'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="20">
 <pre><code>Text(0, 0.5, 'z coordinate / m')</code></pre>
 </div>
@@ -606,18 +610,18 @@ Simulation time: 25.02111</code></pre>
 </div>
 </div>
 </div>
-<div id="e17c6667" class="cell" data-execution_count="22">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example for a multi plot</span></span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>list_t <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">200</span>, <span class="dv">300</span>, <span class="dv">400</span>]</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">2</span>,<span class="dv">3</span>, sharex<span class="op">=</span><span class="va">True</span>, sharey<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(list_t)):</span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    it <span class="op">=</span> slc.get_nearest_timestep(list_t[i])</span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    axs.flat[i].imshow(slc_data[it].T,</span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>                       vmin<span class="op">=</span><span class="dv">20</span>,</span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>                       vmax<span class="op">=</span><span class="dv">400</span>,</span>
-<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>                       origin<span class="op">=</span><span class="st">'lower'</span>, </span>
-<span id="cb36-10"><a href="#cb36-10" aria-hidden="true" tabindex="-1"></a>                       extent<span class="op">=</span>slc.extent.as_list())</span>
-<span id="cb36-11"><a href="#cb36-11" aria-hidden="true" tabindex="-1"></a>    axs.flat[i].set_title(<span class="ss">f"t=</span><span class="sc">{</span>slc<span class="sc">.</span>times[it]<span class="sc">:.1f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="15684267" class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example for a multi plot</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>list_t <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">50</span>, <span class="dv">100</span>, <span class="dv">200</span>, <span class="dv">300</span>, <span class="dv">400</span>]</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">2</span>,<span class="dv">3</span>, sharex<span class="op">=</span><span class="va">True</span>, sharey<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(list_t)):</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>    it <span class="op">=</span> slc.get_nearest_timestep(list_t[i])</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>    axs.flat[i].imshow(slc_data[it].T,</span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>                       vmin<span class="op">=</span><span class="dv">20</span>,</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>                       vmax<span class="op">=</span><span class="dv">400</span>,</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>                       origin<span class="op">=</span><span class="st">'lower'</span>, </span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>                       extent<span class="op">=</span>slc.extent.as_list())</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>    axs.flat[i].set_title(<span class="ss">f"t=</span><span class="sc">{</span>slc<span class="sc">.</span>times[it]<span class="sc">:.1f}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
