@@ -255,7 +255,6 @@ print(slc)
 # only one mesh
 slc_data = slc[0].data
 print(slc_data)
-
 ```
 
 ```{python}
